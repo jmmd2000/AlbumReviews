@@ -1,0 +1,63 @@
+* {
+  font-family: "Courier Prime", monospace;
+  /* font-family: "Quicksand", sans-serif; */
+}
+
+.albumCard {
+  width: 225px;
+  aspect-ratio: 2/1;
+  max-height: 200px;
+  /* border: 1px solid white; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  /* padding: 10px; */
+  /* overflow-wrap: break-word; */
+  /* box-shadow: 4px 5px 0px 0px white; */
+  transition: ease-in-out 0.2s;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.albumCard:hover {
+  /* transform: scale(1.05); */
+  cursor: pointer;
+  transition: ease-in-out 0.2s;
+  box-shadow: 4px 5px 0px 0px white;
+  border: 1px solid white;
+  /* box-shadow: 6px 7px 5px 1px white; */
+  /* box-shadow: 1px 2px 0px 0px white; */
+  /* box-shadow: 6px 7px 0px 0px white; */
+  /* box-shadow: 2px 2px 5px 1px white; */
+}
+
+.albumCard img {
+  width: 150px;
+  height: auto;
+  margin: 10px;
+  border: 1px solid white;
+}
+
+.albumTitle {
+  /* border: 1px solid red; */
+  width: 90%;
+  font-size: 1rem;
+  /* margin: 0 3px; */
+  margin: 5px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.albumArtist {
+  margin: 10px;
+  text-align: start;
+  font-size: 0.8rem;
+}
+
+.albumYear {
+  margin: 10px;
+  text-align: start;
+}
