@@ -6,6 +6,9 @@ import AlbumGrid from "./UI/AlbumGrid";
 const Form = () => {
   const [searchInput, setSearchInput] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [accessToken, setAccessToken] = useState(null);
 
   let inputValue;
   const { responseCode, responseMessage, responseData } = addAlbum(inputValue);
@@ -14,7 +17,15 @@ const Form = () => {
   // 1. Manage error states and loading states
 
   async function search() {
-    const accessToken = await getAccessToken();
+    setLoading(true);
+    if (accessToken === null) {
+      const accessToken = await getAccessToken();
+      setAccessToken(accessToken);
+      console.log(accessToken);
+      // console.log("error");
+      // setError("Access token is null");
+      // return;
+    }
     console.log(searchInput);
     console.log(accessToken);
 
@@ -30,10 +41,13 @@ const Form = () => {
       "https://api.spotify.com/v1/search?q=" +
         searchInput +
         "&type=album&limit=18",
+
       // "https://api.spotify.com/v1/search?q=happier&type=album&limit=21",
       searchParamaters
     );
     request = await request.json();
+
+    console.log(request);
 
     if (request.error) {
       console.log(request.error);
@@ -57,6 +71,7 @@ const Form = () => {
 
     setSearchResults(modifiedArray);
     console.log(modifiedArray);
+    setLoading(false);
   }
 
   return (
@@ -76,6 +91,9 @@ const Form = () => {
       >
         Submit
       </button>
+      {loading && <p>Loading...</p>}
+      {searchResults.length === 0 && <p>No results found</p>}
+      {error && <p>{error}</p>}
       <AlbumGrid albums={searchResults} />
     </form>
   );

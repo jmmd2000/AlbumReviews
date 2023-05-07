@@ -23,8 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 
-# environment variables
-.env
+# keys
+/src/keys.js
 
 # Firebase
 /src/firebase/firebaseConfig.js
