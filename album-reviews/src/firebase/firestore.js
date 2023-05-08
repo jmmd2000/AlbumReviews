@@ -9,7 +9,6 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import firebaseConfig from "./firebaseConfig";
-import { clientID, clientSecret } from "../keys";
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
@@ -38,31 +37,6 @@ export const addAlbum = async (data) => {
 
   return { responseCode, responseMessage, responseData };
 };
-
-// Dumber version of old access token code.
-// Just simply requests a new access token every time.
-export async function getAccessToken() {
-  let accessToken = null;
-
-  const authString = `${clientID}:${clientSecret}`;
-  const encodedAuthString = btoa(authString);
-  const tokenEndpoint = "https://accounts.spotify.com/api/token";
-  const requestOptions = {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: "Basic " + btoa(`${clientID}:${clientSecret}`),
-    },
-    body: "grant_type=client_credentials",
-  };
-
-  const response = await fetch(tokenEndpoint, requestOptions);
-  const data = await response.json();
-  console.log(data);
-  accessToken = data.access_token;
-
-  return accessToken;
-}
 
 // This code randomly stopped working overnight without any changes to it.
 // Changed to above code and it works again.
