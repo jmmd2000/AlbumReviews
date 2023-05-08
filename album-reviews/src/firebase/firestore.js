@@ -42,8 +42,6 @@ export const addAlbum = async (data) => {
 // Changed to above code and it works again.
 // export const getAccessToken = async () => {
 //   let accessToken = null;
-//   // const clientId = "d38ac72e9de745bbb88dabad8bb095c2";
-//   // const clientSecret = "b52def9023ea4581a8df9682fd64ae21";
 //   const authUrl = "https://accounts.spotify.com/api/token";
 //   const { clientID, clientSecret } = getApiKeys();
 //   const authString = `${clientID}:${clientSecret}`;
