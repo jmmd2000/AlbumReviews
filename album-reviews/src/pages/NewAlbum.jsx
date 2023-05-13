@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { addAlbum } from "../firebase/firestore";
+import { ColorRing } from "react-loader-spinner";
 import AlbumCard from "../components/UI/AlbumCard";
 import AlbumGrid from "../components/UI/AlbumGrid";
+import AlbumSearch from "../components/UI/AlbumSearch";
 import AlbumForm from "../components/UI/AlbumForm";
 
 import { clientID, clientSecret } from "../keys";
@@ -12,10 +14,14 @@ const NewAlbumPage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [accessToken, setAccessToken] = useState(null);
-  // const [tokenIsValid, setTokenIsValid] = useState(false);
+  const [albumChosen, setAlbumChosen] = useState(false);
+  const [albumID, setAlbumID] = useState(null);
+  const [album, setAlbum] = useState({});
+  const [artist, setArtist] = useState(null);
 
-  let inputValue;
-  const { responseCode, responseMessage, responseData } = addAlbum(inputValue);
+  useEffect(() => {
+    console.log(artist);
+  }, [artist]);
 
   useEffect(() => {
     async function fixToken() {
@@ -34,7 +40,7 @@ const NewAlbumPage = () => {
   // 1. Manage error states and loading states
 
   async function search() {
-    setLoading(true);
+    // setLoading(true);
     // if (accessToken === null) {
     //   console.log(accessToken + " 1" + " " + Date.now());
     //   // const at = await getAccessToken();
@@ -65,7 +71,7 @@ const NewAlbumPage = () => {
     );
     request = await request.json();
 
-    console.log(request);
+    // console.log(request);
 
     if (request.error) {
       console.log(request.error);
@@ -75,6 +81,7 @@ const NewAlbumPage = () => {
     var data = request.albums.items;
 
     var modifiedArray = [...data];
+    // console.log(modifiedArray);
 
     modifiedArray.forEach((element) => {
       //remove the element if its a single
@@ -89,8 +96,20 @@ const NewAlbumPage = () => {
 
     setSearchResults(modifiedArray);
     console.log(modifiedArray);
-    setLoading(false);
+    // console.log(modifiedArray[0].id);
+    // setLoading(false);
   }
+
+  function parseSearchResults(searchResults) {
+    const results = [];
+    searchResults.forEach((result) => {
+      results.push(result);
+    });
+    // console.log(results);
+    return results;
+  }
+
+  const parsedResults = parseSearchResults(searchResults);
 
   // Dumber version of old access token code.
   // Just simply requests a new access token every time.
@@ -119,41 +138,107 @@ const NewAlbumPage = () => {
     return accessToken;
   }
 
+  async function getAlbum(id, accessToken) {
+    // console.log(id);
+    const response = await fetch(`https://api.spotify.com/v1/albums/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + accessToken,
+      },
+    });
+    setLoading(true);
+    const data = await response.json();
+
+    // console.log(data);
+    setLoading(false);
+
+    return data;
+  }
+
+  async function getArtist(id, accessToken) {
+    console.log(id);
+    const response = await fetch(`https://api.spotify.com/v1/artists/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + accessToken,
+      },
+    });
+    setLoading(true);
+    const data = await response.json();
+
+    console.log(data);
+    setLoading(false);
+
+    return data;
+  }
+
+  async function cardClickFunction(id) {
+    setLoading(true);
+    setAlbumID(id);
+    const album = await getAlbum(id, accessToken);
+    setAlbum(album);
+    console.log(album.artists[0].id);
+    const artistData = await getArtist(album.artists[0].id, accessToken);
+    setArtist(artistData);
+
+    console.log(artist);
+
+    setAlbumChosen(true);
+    setLoading(false);
+    console.log(album);
+    console.log(artistData);
+    console.log(artist);
+  }
+
   return (
     <>
-      <AlbumForm
-        searchFunction={search}
-        setSearchState={setSearchInput}
-        loading={loading}
-        error={error}
-        searchResults={searchResults}
-      />
+      {!albumChosen && artist === null && (
+        <AlbumSearch
+          searchFunction={search}
+          setSearchState={setSearchInput}
+          loading={loading}
+          error={error}
+          // searchResults={searchResults}
+          searchResults={parsedResults}
+          cardClickFunction={cardClickFunction}
+          albumID={albumID}
+        />
+      )}
+      {loading && (
+        <ColorRing
+          visible={true}
+          height="80"
+          width="80"
+          ariaLabel="blocks-loading"
+          wrapperStyle={{
+            display: "block",
+            margin: "auto",
+          }}
+          wrapperClass="blocks-wrapper"
+          // className={classes.centerSpinner}
+          colors={[
+            "#9b59b6",
+            "#5c7cfa",
+            "#339af0",
+            "#51cf66",
+            "#f1c40f",
+            "#e67e22",
+            "#e74c3c",
+            "#34495e",
+          ]}
+        />
+      )}
+      {console.log(artist)}
+      {albumChosen && !loading && artist != null && (
+        <AlbumForm
+          album={album}
+          artist={artist}
+        />
+      )}
     </>
   );
-
-  // return (
-  //   <form>
-  //     <input
-  //       type="text"
-  //       onChange={(event) => {
-  //         setSearchInput(event.target.value);
-  //       }}
-  //     />
-  //     <button
-  //       type="submit"
-  //       onClick={(event) => {
-  //         event.preventDefault();
-  //         search();
-  //       }}
-  //     >
-  //       Submit
-  //     </button>
-  //     {loading && <p>Loading...</p>}
-  //     {searchResults.length === 0 && <p>No results found</p>}
-  //     {error && <p>{error}</p>}
-  //     <AlbumGrid albums={searchResults} />
-  //   </form>
-  // );
 };
 
 export default NewAlbumPage;

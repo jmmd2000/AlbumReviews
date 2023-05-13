@@ -1,0 +1,77 @@
+.formContainer {
+  max-height: 50px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding: 0.5rem 2rem;
+  background-color: #242424;
+}
+
+.formLabel {
+  color: white;
+  padding: 1rem;
+}
+
+.formSelect {
+  background-color: #242424;
+  color: white;
+  border: 1px solid white;
+  box-shadow: 4px 5px 0px 0px white;
+  padding: 0.5rem;
+  margin-left: auto;
+}
+
+.formSelectOption:hover {
+  background-color: white !important;
+}
+
+.explicitIcon {
+  width: 1rem;
+  display: table-cell;
+  /* padding-left: 10px;  */
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid white;
+  color: white;
+}
+
+.artistNames {
+  font-size: 12px !important;
+  color: rgb(221, 221, 221);
+}
+
+.perfect {
+  background-color: #9b59b6;
+}
+
+.amazing {
+  background-color: #5c7cfa;
+}
+
+.great {
+  background-color: #339af0;
+}
+
+.good {
+  background-color: #51cf66;
+}
+
+.meh {
+  background-color: #f1c40f;
+}
+
+.bad {
+  background-color: #e67e22;
+}
+
+.awful {
+  background-color: #e74c3c;
+}
+
+.nonSong {
+  background-color: #34495e;
+}
+
+.noRating {
+  background-color: #242424;
+}

@@ -1,0 +1,24 @@
+.trackListContainer {
+  max-width: 120rem;
+  margin: 0 auto;
+  border: 1px solid white;
+  box-shadow: 4px 5px 0 0 white;
+  margin-bottom: 2.4rem;
+}
+
+.trackListHeading {
+  font-size: 2.2rem;
+  color: white;
+  padding: 1rem;
+  margin: 1rem;
+  text-decoration: underline;
+}
+
+.trackList {
+  color: white;
+  /* width: 90%; */
+  margin: auto;
+  /* -webkit-column-count: 2; Chrome, Safari, Opera
+  -moz-column-count: 2; /* Firefox 
+  column-count: 2; */
+}

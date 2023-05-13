@@ -1,0 +1,35 @@
+.artistInfo {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
+
+.artistName {
+  font-size: 1.6rem;
+  padding: 1.2rem;
+  display: inline-block;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+  /* font-size: 10px; */
+}
+
+.artistImage {
+  width: 5rem;
+  aspect-ratio: 1 / 1;
+  border-radius: 100%;
+  margin: 2rem 1rem;
+  display: inline-block;
+}
+
+.errorMessage {
+  color: red;
+  font-size: 1.2rem;
+  padding: 1rem;
+  display: inline-block;
+  border: 1px solid red;
+  /* border-radius: 5px; */
+  box-shadow: 4px 5px 0px 0px red;
+}

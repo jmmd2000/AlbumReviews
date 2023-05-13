@@ -1,0 +1,41 @@
+.searchInput {
+  min-width: 20%;
+  height: 30px;
+  box-shadow: 4px 5px 0px 0px white;
+  border: 1px solid white;
+  background-color: #242424;
+  color: white;
+}
+
+.searchButton {
+  margin-left: 2rem;
+  height: 30px;
+  box-shadow: 4px 5px 0px 0px white;
+  border: 1px solid white;
+  background-color: #242424;
+  color: white;
+  font-weight: bold;
+}
+
+.searchButton:hover {
+  background-color: white;
+  color: #242424;
+  box-shadow: 4px 5px 0px 0px #242424;
+  cursor: pointer;
+}
+
+.searchForm {
+  width: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  margin: 1rem;
+}
+
+.formContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}

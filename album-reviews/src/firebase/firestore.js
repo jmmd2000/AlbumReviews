@@ -5,8 +5,11 @@ import {
   addDoc,
   doc,
   getDoc,
+  getDocs,
   setDoc,
   updateDoc,
+  query,
+  where,
 } from "firebase/firestore";
 import firebaseConfig from "./firebaseConfig";
 
@@ -22,9 +25,21 @@ export const addAlbum = async (data) => {
   let responseMessage = null;
   let responseData = null;
 
+  console.log(data);
+
   try {
     addDoc(albumsRef, {
-      album: data,
+      album: data.album,
+      // total_tracks: data.album.album.total_tracks,
+      // id: data.album.id,
+      // name: data.album.album.name,
+      // artist: data.album.album.artists,
+      // images: data.album.album.images,
+      // release_date: data.album.album.release_date,
+      comment: data.comment,
+      ratings: data.ratings,
+      finalRating: data.finalRating,
+      durationMS: data.durationMS,
     });
     responseCode = 200;
     responseMessage = "Success";
@@ -36,6 +51,88 @@ export const addAlbum = async (data) => {
   }
 
   return { responseCode, responseMessage, responseData };
+};
+
+export const getAllAlbums = async () => {
+  console.log("getAllAlbums");
+  var albums = [];
+  const querySnapshot = await getDocs(collection(db, "albums"));
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    // console.log(doc.id, " => ", doc.data());
+    albums.push(doc.data());
+  });
+
+  return albums;
+};
+
+export const getAlbumDetail = async (id) => {
+  console.log("getAlbumDetail");
+
+  const querySnapshot = await getDocs(
+    query(collection(db, "albums"), where("album.id", "==", id))
+  );
+
+  var docs = [];
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    console.log(doc.id, " => ", doc.data());
+    docs.push(doc.data());
+  });
+  if (querySnapshot.empty) {
+    return null;
+  } else {
+    return docs[0];
+  }
+};
+
+export const addArtist = async (data) => {
+  const artistsRef = collection(db, "artists");
+
+  let responseCode = null;
+  let responseMessage = null;
+  let responseData = null;
+
+  console.log(data);
+
+  try {
+    addDoc(artistsRef, {
+      artist: data.artist,
+    });
+    responseCode = 200;
+    responseMessage = "Success";
+    responseData = data;
+  } catch (error) {
+    responseCode = error.code;
+    responseMessage = error.message;
+    responseData = error.data;
+  }
+
+  return { responseCode, responseMessage, responseData };
+};
+
+export const getArtistDetail = async (id) => {
+  console.log("getArtistDetail");
+  // const albumRef = doc(db, "albums", "2MaVmwpatnKBVkWLNrr3");
+  // const albumSnapshot = await getDoc(albumRef);
+  // console.log(albumSnapshot);
+  // const q = query(
+  //   collection(db, "albums"),
+  //   where("id", "==", "2MaVmwpatnKBVkWLNrr3")
+  // );
+  const querySnapshot = await getDocs(
+    query(collection(db, "artists"), where("artist.id", "==", id))
+  );
+  // console.log(querySnapshot);
+  var docs = [];
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    console.log(doc.id, " => ", doc.data());
+    docs.push(doc.data());
+  });
+  // console.log(albumSnapshot.data());
+  // return albumSnapshot.data();
+  return docs[0];
 };
 
 // This code randomly stopped working overnight without any changes to it.
