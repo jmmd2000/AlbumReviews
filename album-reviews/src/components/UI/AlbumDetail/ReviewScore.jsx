@@ -35,16 +35,21 @@ const ReviewScore = ({ score, onCard }) => {
   }, [scoreClass]);
 
   // console.log(scoreClass);
-  const onCardClass = onCard === true ? classes.onCardPosition : "";
+  const onCardClass =
+    onCard === true ? classes.onCardPosition : classes.inDescriptionPosition;
+  const sizeClass = onCard === true ? classes.small : classes.large;
+  const textSizeClass = onCard === true ? classes.smallText : classes.largeText;
 
   return (
     <div className={`${classes.scoreContainer} ${onCardClass}`}>
-      <div className={`${classes.circle} ${scoreClass}`}>
+      <div className={`${classes.circle} ${scoreClass} ${sizeClass}`}>
         <div className={classes.innerCircle}>{score}</div>
       </div>
-      {onCard !== true && (
-        <p className={`${classes.scoreText} ${scoreClass}`}>{scoreText}</p>
-      )}
+      {/* {onCard !== true && ( */}
+      <p className={`${classes.scoreText} ${scoreClass} ${textSizeClass}`}>
+        {scoreText}
+      </p>
+      {/* )} */}
     </div>
   );
 };

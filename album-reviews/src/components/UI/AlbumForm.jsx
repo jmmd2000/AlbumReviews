@@ -10,7 +10,7 @@ import {
 } from "react-router-dom";
 
 import classes from "./AlbumForm.module.css";
-import { addAlbum, addArtist } from "../../firebase/firestore";
+import { addAlbum, addArtist, getArtistDetail } from "../../firebase/firestore";
 
 const AlbumForm = (props) => {
   const { album, artist } = props;
@@ -177,8 +177,16 @@ export async function action({ request, params }) {
   const { responseCodeAlbum, responseMessageAlbum, responseDataAlbum } =
     await addAlbum(albumData);
 
-  const { responseCodeArtist, responseMessageArtist, responseDataArtist } =
-    await addArtist(artistData);
+  // let responseCodeArtist = 200;
+  // let responseMessageArtist = "";
+  // let responseDataArtist = "";
+
+  const artistExists = await getArtistDetail(parsedArtist.id);
+  console.log(artistExists);
+  if (artistExists === undefined) {
+    const { responseCodeArtist, responseMessageArtist, responseDataArtist } =
+      await addArtist(artistData);
+  }
 
   // if (!response.ok) {
   //   throw json({ message: "Could not save album." }, { status: 500 });
@@ -186,17 +194,18 @@ export async function action({ request, params }) {
   console.log(responseCodeAlbum);
   console.log(responseMessageAlbum);
   console.log(responseDataAlbum);
-  console.log(responseCodeArtist);
-  console.log(responseMessageArtist);
-  console.log(responseDataArtist);
+  // console.log(responseCodeArtist);
+  // console.log(responseMessageArtist);
+  // console.log(responseDataArtist);
 
-  if (responseCodeAlbum !== 200 || responseCodeArtist !== 200) {
+  // if (responseCodeAlbum !== 200 || responseCodeArtist !== 200) {
+  if (responseCodeAlbum !== 200) {
     // throw json(
     //   { message: responseMessageAlbum + " " + responseMessageArtist },
     //   { status: 500 }
     // );
     console.log(responseMessageAlbum);
-    console.log(responseMessageArtist);
+    // console.log(responseMessageArtist);
   } else {
     // return redirect("/albums");
   }

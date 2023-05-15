@@ -8,6 +8,7 @@ import {
   getDocs,
   setDoc,
   updateDoc,
+  deleteDoc,
   query,
   where,
 } from "firebase/firestore";
@@ -30,6 +31,7 @@ export const addAlbum = async (data) => {
   try {
     addDoc(albumsRef, {
       album: data.album,
+      artistID: data.album.artists[0].id,
       // total_tracks: data.album.album.total_tracks,
       // id: data.album.id,
       // name: data.album.album.name,
@@ -51,6 +53,26 @@ export const addAlbum = async (data) => {
   }
 
   return { responseCode, responseMessage, responseData };
+};
+
+export const deleteAlbum = async (id, artistID) => {
+  console.log("deleteAlbum");
+  const albums = await getAllAlbumsByArtist(artistID);
+  console.log(albums);
+  console.log(JSON.stringify(albums.length));
+  if (albums.length === 1) {
+    deleteArtist(artistID);
+  }
+  console.log("else");
+  const querySnapshot = await getDocs(
+    query(collection(db, "albums"), where("album.id", "==", id))
+  );
+  console.log(querySnapshot.docs);
+
+  const docRef = doc(db, "albums", querySnapshot.docs[0].id);
+  // console.log(querySnapshot.docs[0].id);
+  // Why is this not deleteing the document?
+  await deleteDoc(docRef);
 };
 
 export const getAllAlbums = async () => {
@@ -86,6 +108,21 @@ export const getAlbumDetail = async (id) => {
   }
 };
 
+export const getAllAlbumsByArtist = async (id) => {
+  console.log("getAllAlbumsByArtist");
+  var albums = [];
+  const querySnapshot = await getDocs(
+    query(collection(db, "albums"), where("artistID", "==", id))
+  );
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    // console.log(doc.id, " => ", doc.data());
+    albums.push(doc.data());
+  });
+
+  return albums;
+};
+
 export const addArtist = async (data) => {
   const artistsRef = collection(db, "artists");
 
@@ -111,6 +148,18 @@ export const addArtist = async (data) => {
   return { responseCode, responseMessage, responseData };
 };
 
+export const deleteArtist = async (id) => {
+  console.log("deleteArtist");
+
+  const querySnapshot = await getDocs(
+    query(collection(db, "artists"), where("artist.id", "==", id))
+  );
+
+  const docRef = doc(db, "artists", querySnapshot.docs[0].id);
+
+  await deleteDoc(docRef);
+};
+
 export const getArtistDetail = async (id) => {
   console.log("getArtistDetail");
   // const albumRef = doc(db, "albums", "2MaVmwpatnKBVkWLNrr3");
@@ -133,6 +182,19 @@ export const getArtistDetail = async (id) => {
   // console.log(albumSnapshot.data());
   // return albumSnapshot.data();
   return docs[0];
+};
+
+export const getAllArtists = async () => {
+  console.log("getAllArtists");
+  var artists = [];
+  const querySnapshot = await getDocs(collection(db, "artists"));
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    // console.log(doc.id, " => ", doc.data());
+    artists.push(doc.data());
+  });
+
+  return artists;
 };
 
 // This code randomly stopped working overnight without any changes to it.

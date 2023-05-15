@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { addAlbum } from "../firebase/firestore";
-import { ColorRing } from "react-loader-spinner";
 import AlbumCard from "../components/UI/AlbumCard";
 import AlbumGrid from "../components/UI/AlbumGrid";
 import AlbumSearch from "../components/UI/AlbumSearch";
 import AlbumForm from "../components/UI/AlbumForm";
+import LoadingSpinner from "../components/UI/LoadingSpinner";
 
 import { clientID, clientSecret } from "../keys";
 
@@ -40,7 +40,7 @@ const NewAlbumPage = () => {
   // 1. Manage error states and loading states
 
   async function search() {
-    // setLoading(true);
+    setLoading(true);
     // if (accessToken === null) {
     //   console.log(accessToken + " 1" + " " + Date.now());
     //   // const at = await getAccessToken();
@@ -97,7 +97,7 @@ const NewAlbumPage = () => {
     setSearchResults(modifiedArray);
     console.log(modifiedArray);
     // console.log(modifiedArray[0].id);
-    // setLoading(false);
+    setLoading(false);
   }
 
   function parseSearchResults(searchResults) {
@@ -206,30 +206,7 @@ const NewAlbumPage = () => {
           albumID={albumID}
         />
       )}
-      {loading && (
-        <ColorRing
-          visible={true}
-          height="80"
-          width="80"
-          ariaLabel="blocks-loading"
-          wrapperStyle={{
-            display: "block",
-            margin: "auto",
-          }}
-          wrapperClass="blocks-wrapper"
-          // className={classes.centerSpinner}
-          colors={[
-            "#9b59b6",
-            "#5c7cfa",
-            "#339af0",
-            "#51cf66",
-            "#f1c40f",
-            "#e67e22",
-            "#e74c3c",
-            "#34495e",
-          ]}
-        />
-      )}
+      {loading && <LoadingSpinner />}
       {console.log(artist)}
       {albumChosen && !loading && artist != null && (
         <AlbumForm

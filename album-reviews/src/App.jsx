@@ -3,6 +3,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import RootLayout from "./pages/Root";
 import HomePage from "./pages/Home";
 import AlbumsRootLayout from "./pages/AlbumsRoot";
+import ArtistsRootLayout from "./pages/ArtistsRoot";
 import AlbumsPage, { loader as albumPageLoader } from "./pages/Albums";
 import AlbumDetailPage, {
   loader as albumDetailLoader,
@@ -10,11 +11,17 @@ import AlbumDetailPage, {
 } from "./pages/AlbumDetail";
 import NewAlbumPage from "./pages/NewAlbum";
 import EditAlbumPage from "./pages/EditAlbum";
-import ArtistsPage from "./pages/Artists";
-import ArtistDetailPage from "./pages/ArtistDetail";
+import ArtistsPage, { loader as artistPageLoader } from "./pages/Artists";
+import ArtistDetailPage, {
+  loader as artistDetailLoader,
+} from "./pages/ArtistDetail";
 import ErrorPage from "./pages/Error";
 import { action as albumFormAction } from "./components/UI/AlbumForm";
-import { getAllAlbums, getAlbumDetail } from "./firebase/firestore";
+import {
+  getAllAlbums,
+  getAlbumDetail,
+  getAllArtists,
+} from "./firebase/firestore";
 
 const router = createBrowserRouter([
   {
@@ -30,7 +37,7 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <AlbumsPage />,
-            loader: getAllAlbums,
+            loader: albumPageLoader,
           },
           {
             path: ":albumID",
@@ -58,12 +65,17 @@ const router = createBrowserRouter([
       },
       {
         path: "artists",
-        element: <ArtistsPage />,
+        element: <ArtistsRootLayout />,
         children: [
+          {
+            index: true,
+            element: <ArtistsPage />,
+            loader: artistPageLoader,
+          },
           {
             path: ":artistID",
             element: <ArtistDetailPage />,
-            // loader: artistDetailLoader,
+            loader: artistDetailLoader,
           },
         ],
       },

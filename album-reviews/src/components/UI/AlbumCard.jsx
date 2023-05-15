@@ -19,7 +19,7 @@ const AlbumCard = (props) => {
     cardClickFunction(albumID);
   };
 
-  // console.log(props);
+  console.log(releaseDate);
 
   return (
     <div
@@ -38,7 +38,11 @@ const AlbumCard = (props) => {
       />
 
       <h3 className={classes.albumTitle}>{albumName}</h3>
-      <p className={classes.albumArtist}>{artistName}</p>
+      <p className={classes.albumArtist}>
+        {artistName}
+        {" - "}
+        <span className={classes.albumYear}>{releaseDate.substring(0, 4)}</span>
+      </p>
     </div>
   );
 };

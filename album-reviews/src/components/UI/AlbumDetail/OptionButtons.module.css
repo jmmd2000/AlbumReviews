@@ -1,0 +1,31 @@
+.buttonContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 2.4rem;
+}
+
+.button {
+  padding: 1rem 2rem;
+  background-color: #242424;
+  color: white;
+  font-weight: bold;
+  border: 1px solid white;
+  box-shadow: 4px 5px 0px 0px white;
+  margin: 2rem;
+}
+
+.button:hover {
+  cursor: pointer;
+  box-shadow: 0px 0px 0px 0px white;
+  border: 0px solid white;
+  color: black;
+}
+
+.edit:hover {
+  background-color: #f1c40f;
+}
+
+.delete:hover {
+  background-color: #e74c3c;
+}

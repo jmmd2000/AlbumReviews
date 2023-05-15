@@ -1,21 +1,21 @@
-import { useState } from "react";
-
 import AlbumCard from "./AlbumCard";
-import classes from "./AlbumGrid.module.css";
+import classes from "./Grid.module.css";
+import { useState, useEffect } from "react";
 
 const AlbumGrid = ({ albums, cardClickFunction, source }) => {
-  // const [source, setSource] = useState("");
-  // console.log(albums);
+  const [layoutClass, setLayoutClass] = useState(classes.grid);
+  console.log(albums);
 
-  // function checkSource(albums, source) {
-  //   if (source === "SEARCH") {
-  //     setSource("SEARCH");
-  //   } else if (source === "ALBUMS") {
-  //   }
-  // }
+  useEffect(() => {
+    if (albums.length < 6) {
+      setLayoutClass(classes.flex);
+    } else {
+      setLayoutClass(classes.grid);
+    }
+  }, [albums]);
 
   return (
-    <div className={classes.albumGrid}>
+    <div className={layoutClass}>
       {albums.map((album, i) => {
         let albumObject = {};
         {
@@ -37,10 +37,6 @@ const AlbumGrid = ({ albums, cardClickFunction, source }) => {
                 spotifyLink: album.external_urls.spotify,
                 albumID: album.id,
               });
-        }
-
-        {
-          /* console.log(albumObject); */
         }
 
         return (

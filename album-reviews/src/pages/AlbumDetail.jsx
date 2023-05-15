@@ -5,8 +5,11 @@ import AlbumCard from "../components/UI/AlbumCard";
 import AlbumDetailInfo from "../components/UI/AlbumDetail/AlbumDetailInfo";
 import CommentSection from "../components/UI/AlbumDetail/CommentSection";
 import TrackList from "../components/UI/AlbumDetail/TrackList";
+import OptionButtons from "../components/UI/AlbumDetail/OptionButtons";
 
 const AlbumDetailPage = () => {
+  const [pageTitle, setPageTitle] = useState("Albums");
+  document.title = pageTitle;
   const album = useRouteLoaderData("album-detail");
   // const [artistInfo, setArtistInfo] = useState(null);
   console.log(album);
@@ -20,7 +23,7 @@ const AlbumDetailPage = () => {
         >
           {(albumData) => (
             <>
-              {console.log(albumData)}
+              {setPageTitle(albumData.album.album.name)}
               <AlbumDetailInfo albumData={albumData.album} />
               {albumData.album.comment !== "" && (
                 <CommentSection comments={albumData.album.comment} />
@@ -28,6 +31,10 @@ const AlbumDetailPage = () => {
               <TrackList
                 tracks={albumData.album.album.tracks.items}
                 ratings={albumData.album.ratings}
+              />
+              <OptionButtons
+                albumID={albumData.album.album.id}
+                artistID={albumData.album.album.artists[0].id}
               />
             </>
           )}

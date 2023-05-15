@@ -1,23 +1,24 @@
-import React, { useEffect, useState } from "react";
-import { useLoaderData, Await, useNavigate } from "react-router";
+import React, { Suspense } from "react";
+import { useLoaderData, Await, useNavigate, defer } from "react-router";
 
-// import { getAllAlbums } from "../firebase/firestore";
 import AlbumGrid from "../components/UI/AlbumGrid";
 import { getAllAlbums } from "../firebase/firestore";
+import LoadingSpinner from "../components/UI/LoadingSpinner";
+import SkeletonGrid from "../components/UI/Skeletons/SkeletonGrid";
 
 const AlbumsPage = () => {
-  const albumList = useLoaderData();
+  document.title = "Albums";
+  const { albumList } = useLoaderData();
   const navigate = useNavigate();
 
   function navigateToAlbumDetail(albumID) {
-    // console.log(albumList);
     navigate(albumID);
   }
 
   return (
     <>
       <h1>Albums</h1>
-      <React.Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<SkeletonGrid />}>
         <Await
           resolve={albumList}
           error={<div>There was an error loading the albums.</div>}
@@ -31,7 +32,7 @@ const AlbumsPage = () => {
             />
           )}
         </Await>
-      </React.Suspense>
+      </Suspense>
     </>
   );
 };

@@ -1,0 +1,69 @@
+/* track-list.css */
+.tabList {
+  display: flex;
+  margin-bottom: 10px;
+  width: 90%;
+  margin: auto;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.6rem;
+}
+
+.tabList button {
+  padding: 8px 16px;
+  margin-right: 5px;
+  font-size: 14px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  color: white;
+}
+
+.tabList button.active {
+  font-weight: bold;
+  border-bottom: 2px solid white;
+}
+
+.trackList h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  color: white;
+  text-align: center;
+}
+
+.trackList ul {
+  list-style-type: none;
+  padding: 0;
+  /* border: 1px solid red; */
+  color: white;
+}
+
+.trackList li {
+  margin-bottom: 5px;
+  text-align: center;
+}
+
+.listContainer {
+  display: flex;
+  /* grid-template-columns: 1fr 5fr; */
+}
+
+.albumArt {
+  width: 80px;
+  height: 80px;
+  aspect-ratio: 1 / 1;
+  margin: 1rem;
+}
+
+.albumContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rankGrid {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  flex-wrap: wrap;
+}

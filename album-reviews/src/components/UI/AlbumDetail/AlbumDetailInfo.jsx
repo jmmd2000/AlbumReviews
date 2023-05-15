@@ -26,8 +26,12 @@ const AlbumDetailInfo = ({ albumData }) => {
 
           <div className={classes.flexRow}>
             <ArtistBioRow artistID={album.artists[0].id} />
-            <ReviewScore score={albumData.finalRating} />
           </div>
+          <ReviewScore
+            score={albumData.finalRating}
+            onCard={false}
+            // className={classes.scorePosition}
+          />
           <div className={classes.albumDescription}>
             <p className={classes.albumStatTitle}># of songs</p>
             <p className={classes.albumStatTitle}>Runtime</p>

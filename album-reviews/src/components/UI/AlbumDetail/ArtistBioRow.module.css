@@ -10,6 +10,13 @@
   display: inline-block;
 }
 
+.artistName:hover {
+  text-decoration: underline;
+  /* how do i change underline thickness */
+  text-decoration-thickness: 2px;
+  color: white;
+}
+
 a {
   text-decoration: none;
   color: white;

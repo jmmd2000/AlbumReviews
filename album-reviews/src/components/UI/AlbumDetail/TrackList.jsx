@@ -3,7 +3,7 @@ import classes from "./TrackList.module.css";
 import TrackListItem from "./TrackListItem";
 
 const TrackList = ({ tracks, ratings }) => {
-  console.log(JSON.stringify(ratings[0].rating));
+  // console.log(JSON.stringify(ratings[0].rating));
   return (
     <div className={classes.trackListContainer}>
       <h2 className={classes.trackListHeading}>Tracklist</h2>

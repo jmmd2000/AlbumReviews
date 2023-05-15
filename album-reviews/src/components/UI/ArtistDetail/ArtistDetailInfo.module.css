@@ -1,4 +1,4 @@
-.albumDetailHeader {
+.artistDetailHeader {
   display: grid;
   grid-template-columns: 1fr 2.5fr;
   align-items: top;
@@ -10,15 +10,17 @@
   position: relative;
 }
 
-.albumName {
+.artistName {
   font-size: 2.8rem;
   color: #eee;
   margin: 0;
+  margin-bottom: 45px;
   /* padding: 3.2rem 0 0 0; */
 }
 
-.albumCover {
+.artistImage {
   /* max-width: 25rem !important; */
+  border-radius: 50%;
   width: 225px;
   aspect-ratio: 1 / 1;
   border: 1px solid white;
@@ -30,24 +32,24 @@
   justify-content: left;
 }
 
-.artistName {
+/* .artistName {
   font-size: 1.6rem;
   padding: 1.2rem;
   display: inline-block;
-}
+} */
 
 a {
   text-decoration: none;
   color: white;
 }
 
-.artistImage {
+/* .artistImage {
   width: 5rem;
   aspect-ratio: 1 / 1;
   border-radius: 100%;
   margin: 2rem 1rem;
   display: inline-block;
-}
+} */
 
 /* .artistInfo {
   display: flex;
@@ -65,15 +67,17 @@ a {
 
 .albumDescription {
   display: grid;
-  grid-template-columns: 0.5fr 0.75fr 1fr;
+  grid-template-columns: 0.5fr 0.75fr;
   /* padding: 1.2rem; */
   color: white;
+  margin-bottom: 45px;
 }
 
 .albumStat {
   font-size: 1.8rem;
   padding: 0.9rem 1.8rem;
   margin: 0;
+  display: relative !important;
 }
 
 .albumStatTitle {
@@ -86,10 +90,4 @@ a {
 .flexRow {
   display: grid;
   grid-template-columns: 1fr 1.5fr;
-}
-
-.scorePosition {
-  position: fixed !important;
-  top: 0;
-  right: 0;
 }
