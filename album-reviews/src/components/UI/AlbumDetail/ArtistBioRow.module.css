@@ -12,7 +12,6 @@
 
 .artistName:hover {
   text-decoration: underline;
-  /* how do i change underline thickness */
   text-decoration-thickness: 2px;
   color: white;
 }
@@ -20,7 +19,6 @@
 a {
   text-decoration: none;
   color: white;
-  /* font-size: 10px; */
 }
 
 .artistImage {
@@ -37,6 +35,5 @@ a {
   padding: 1rem;
   display: inline-block;
   border: 1px solid red;
-  /* border-radius: 5px; */
   box-shadow: 4px 5px 0px 0px red;
 }

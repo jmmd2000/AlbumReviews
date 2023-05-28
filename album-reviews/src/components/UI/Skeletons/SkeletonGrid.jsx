@@ -1,19 +1,32 @@
 import classes from "../Grid.module.css";
+
 import Skeleton from "@mui/material/Skeleton";
 
-const SkeletonGrid = () => {
-  const skeletons = 12;
+// This allows me to display a grid of custom skeletons while data is loading.
+
+const SkeletonGrid = ({ height, width, num, shape, filters }) => {
   return (
-    <div className={classes.grid}>
-      {[...Array(skeletons)].map((e, i) => (
-        <Skeleton
-          key={i}
-          variant="rectangular"
-          height={250}
-          width={250}
-        />
-      ))}
-    </div>
+    <>
+      {filters && (
+        <div className={classes.filterSkeleton}>
+          <Skeleton
+            variant="rectangular"
+            height={54}
+            width={500}
+          />
+        </div>
+      )}
+      <div className={classes.grid}>
+        {[...Array(num)].map((e, i) => (
+          <Skeleton
+            key={i}
+            variant={shape}
+            height={height}
+            width={width}
+          />
+        ))}
+      </div>
+    </>
   );
 };
 

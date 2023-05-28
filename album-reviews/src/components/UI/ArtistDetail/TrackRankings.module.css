@@ -2,6 +2,8 @@
   max-width: 120rem;
   margin: 0 auto;
   margin-bottom: 2.4rem;
+  border: 1px solid white;
+  box-shadow: 4px 5px 0 0 white;
 }
 
 .tabList {
@@ -9,7 +11,6 @@
   margin: auto;
   justify-content: center;
   border: 1px solid white;
-  box-shadow: 4px 5px 0 0 white;
   margin-bottom: 2.4rem;
 }
 
@@ -101,4 +102,56 @@
 
 .noRating {
   background-color: #242424;
+}
+
+@media (max-width: 1260px) {
+  .container {
+    width: 90%;
+    margin: 0 auto 2.4rem auto;
+    display: flex;
+    flex-direction: column;
+    padding: 2.2rem;
+  }
+
+  .tabList {
+    width: 100%;
+  }
+}
+
+@media (max-width: 690px) {
+  .tabList {
+    justify-content: space-evenly;
+  }
+
+  .tabListButton {
+    margin: 0;
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 585px) {
+  .container {
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0 auto;
+  }
+
+  .tabList {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tabListButton {
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 390px) {
+  .tabList {
+    grid-template-columns: 1fr 1fr;
+  }
 }

@@ -10,24 +10,26 @@ import AlbumDetailPage, {
   action as actionFunction,
 } from "./pages/AlbumDetail";
 import NewAlbumPage from "./pages/NewAlbum";
-import EditAlbumPage from "./pages/EditAlbum";
+import EditAlbumPage, { loader as editAlbumLoader } from "./pages/EditAlbum";
 import ArtistsPage, { loader as artistPageLoader } from "./pages/Artists";
 import ArtistDetailPage, {
   loader as artistDetailLoader,
 } from "./pages/ArtistDetail";
 import ErrorPage from "./pages/Error";
+import ErrorCard from "./components/Error/ErrorCard";
 import { action as albumFormAction } from "./components/UI/AlbumForm";
 import {
   getAllAlbums,
   getAlbumDetail,
   getAllArtists,
 } from "./firebase/firestore";
+import { AuthProvider } from "./context/AuthContext";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
-    // errorElement: <ErrorPage />,
+    errorElement: <ErrorCard />,
     children: [
       { index: true, element: <HomePage /> },
       {
@@ -48,11 +50,13 @@ const router = createBrowserRouter([
                 index: true,
                 element: <AlbumDetailPage />,
                 action: actionFunction,
+                // errorElement: <ErrorPage />,
               },
               {
                 path: "edit",
                 element: <EditAlbumPage />,
-                // action: manipulateEventAction,
+                action: albumFormAction,
+                loader: editAlbumLoader,
               },
             ],
           },
@@ -84,7 +88,11 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  );
 }
 
 export default App;

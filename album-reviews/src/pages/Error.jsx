@@ -1,10 +1,9 @@
+import ErrorCard from "../components/Error/ErrorCard";
+import { useRouteError } from "react-router-dom";
+
 const ErrorPage = () => {
-  return (
-    <div>
-      <h1>ERROR</h1>
-      <p>Page not found</p>
-    </div>
-  );
+  let error = useRouteError();
+  return <ErrorCard error={error} />;
 };
 
 export default ErrorPage;

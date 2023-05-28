@@ -1,3 +1,5 @@
+import classes from "./AlbumForm.module.css";
+
 import FormSelect from "./Form/FormSelect";
 
 import {
@@ -5,19 +7,30 @@ import {
   useNavigate,
   useNavigation,
   useActionData,
-  json,
   redirect,
 } from "react-router-dom";
 
-import classes from "./AlbumForm.module.css";
-import { addAlbum, addArtist, getArtistDetail } from "../../firebase/firestore";
+import {
+  addAlbum,
+  addArtist,
+  getArtistDetail,
+  updateAlbum,
+} from "../../firebase/firestore";
+
+// This component displays the form to add/edit an album review
+// It uses the useNavigate hook to navigate to the albums page
 
 const AlbumForm = (props) => {
-  const { album, artist } = props;
+  let { album, artist, existingAlbum } = props;
+  // If the existingAlbum prop is passed, then the form is being used to edit an album
+  // So we set the album variable to the existingAlbum data
+  if (existingAlbum) {
+    album = existingAlbum.album;
+  }
   const data = useActionData();
+
   const navigate = useNavigate();
   const navigation = useNavigation();
-  // console.log(artist);
 
   const isSubmitting = navigation.state === "submitting";
 
@@ -26,15 +39,19 @@ const AlbumForm = (props) => {
   }
 
   function compileRatings() {
+    // This function compiles the track ratings from the form into an array of objects
+    // First we access each select element and populate the ratings array with the track number and rating
+    // Then we add up each tracks duration in ms to be used to calculate the complete runtime of the album
+    // We then calculate the final score for the album. It adds up each rating and divides it by the max score (7 * number of songs)
+    // Each "non-song" (skit, interlude, etc.) takes one song away from the total number of songs
+    // We then set the values of the hidden inputs to the final score, ratings array, and artist data etc. to be sent to the db
     var ratings = [];
     let finalScore = 0;
     let nonSongs = 0;
     var form = document.getElementById("albumForm");
     var elements = form.elements;
-    // console.log(elements);
     for (var i = 0, len = elements.length; i < len; ++i) {
       if (elements[i].type === "select-one") {
-        console.log(elements[i].value);
         const ratingObj = {
           track_number: elements[i].id,
           rating: elements[i].value,
@@ -51,6 +68,7 @@ const AlbumForm = (props) => {
     }
 
     let duration = 0;
+
     for (var i = 0; i < album.tracks.items.length; i++) {
       duration += album.tracks.items[i].duration_ms;
     }
@@ -59,33 +77,44 @@ const AlbumForm = (props) => {
     finalScore = Math.round((finalScore / maxScore) * 100);
 
     document.getElementById("finalRating").value = JSON.stringify(finalScore);
-
     document.getElementById("ratings").value = JSON.stringify(ratings);
-    // Get the artist and album data and populate the hidden inputs
     document.getElementById("artistData").value = JSON.stringify(artist);
-    // console.log(JSON.stringify(artist));
+
     var modifiedAlbum = JSON.stringify(album);
-    // modifiedAlbum = modifiedAlbum.substring(9, modifiedAlbum.length - 1);
-    // console.log(modifiedAlbum);
     document.getElementById("albumData").value = modifiedAlbum;
     document.getElementById("durationMS").value = duration;
   }
 
-  // console.log(album);
-  const arr = album.tracks.items;
-  // console.log(arr);
-  const selectGroup = arr.map((track, i) => {
-    return (
-      <FormSelect
-        track={track}
-        key={i}
-      />
-    );
-  });
-  // console.log(selectGroup);
+  // The selectGroup variable is used to display the track rating select elements
+  // If the existingAlbum prop is passed, then we need to set the value of the select to the rating for each track
+  let selectGroup;
+  if (existingAlbum) {
+    selectGroup = existingAlbum.album.tracks.items.map((track, i) => {
+      // console.log(existingAlbum.ratings[i].rating.toString());
+      // console.log(track);
+      let score = existingAlbum.ratings[i].rating.toString();
+      return (
+        <FormSelect
+          track={track}
+          key={i}
+          presetScore={score}
+        />
+      );
+    });
+  } else {
+    selectGroup = album.tracks.items.map((track, i) => {
+      return (
+        <FormSelect
+          track={track}
+          key={i}
+        />
+      );
+    });
+  }
+
   return (
     <Form
-      method="POST"
+      method={existingAlbum ? "PUT" : "POST"}
       className={classes.albumForm}
       id="albumForm"
     >
@@ -100,11 +129,11 @@ const AlbumForm = (props) => {
           name="comment"
           id="comment"
           className={classes.commentInput}
+          defaultValue={existingAlbum ? existingAlbum.comment : ""}
         />
       </div>
       <h2 className={classes.selectGroupTitle}>Track Ratings</h2>
       <div className={classes.selectGroup}>{selectGroup}</div>
-      {/* <button onClick={compileRatings}>Confirm</button> */}
       <input
         id="ratings"
         name="ratings"
@@ -136,7 +165,7 @@ const AlbumForm = (props) => {
           className={classes.submitButton}
           onClick={compileRatings}
         >
-          Submit
+          {existingAlbum ? "Update" : "Submit"}
         </button>
         <button
           type="button"
@@ -156,58 +185,37 @@ export default AlbumForm;
 export async function action({ request, params }) {
   const method = request.method;
   const data = await request.formData();
-
+  // Get the data from the hidden inputs
   const parsedRatings = JSON.parse(data.get("ratings"));
   const parsedAlbum = JSON.parse(data.get("albumData"));
-  const parsedArtist = JSON.parse(data.get("artistData"));
 
-  console.log(params.albumID);
+  // The artist data only needs to be checked if this is a new album review being submitted
+  if (method === "POST") {
+    const parsedArtist = JSON.parse(data.get("artistData"));
+    const artistData = {
+      artist: parsedArtist,
+    };
+    const artistExists = await getArtistDetail(parsedArtist.id);
+    if (artistExists === undefined) {
+      await addArtist(artistData);
+    }
+  }
+
   const albumData = {
     comment: data.get("comment"),
     ratings: parsedRatings,
     album: parsedAlbum,
     finalRating: data.get("finalRating"),
     durationMS: data.get("durationMS"),
+    postDate: Date.now(),
   };
 
-  const artistData = {
-    artist: parsedArtist,
-  };
-
-  const { responseCodeAlbum, responseMessageAlbum, responseDataAlbum } =
+  if (method === "PUT") {
+    await updateAlbum(params.albumID, albumData);
+  } else if (method === "POST") {
     await addAlbum(albumData);
-
-  // let responseCodeArtist = 200;
-  // let responseMessageArtist = "";
-  // let responseDataArtist = "";
-
-  const artistExists = await getArtistDetail(parsedArtist.id);
-  console.log(artistExists);
-  if (artistExists === undefined) {
-    const { responseCodeArtist, responseMessageArtist, responseDataArtist } =
-      await addArtist(artistData);
   }
 
-  // if (!response.ok) {
-  //   throw json({ message: "Could not save album." }, { status: 500 });
-  // }
-  console.log(responseCodeAlbum);
-  console.log(responseMessageAlbum);
-  console.log(responseDataAlbum);
-  // console.log(responseCodeArtist);
-  // console.log(responseMessageArtist);
-  // console.log(responseDataArtist);
-
-  // if (responseCodeAlbum !== 200 || responseCodeArtist !== 200) {
-  if (responseCodeAlbum !== 200) {
-    // throw json(
-    //   { message: responseMessageAlbum + " " + responseMessageArtist },
-    //   { status: 500 }
-    // );
-    console.log(responseMessageAlbum);
-    // console.log(responseMessageArtist);
-  } else {
-    // return redirect("/albums");
-  }
+  // Redirect to the albums page when done
   return redirect("/albums");
 }

@@ -1,8 +1,10 @@
-import { useState } from "react";
+import classes from "./AlbumSearch.module.css";
 
+import { useState } from "react";
 import AlbumGrid from "./AlbumGrid";
 
-import classes from "./AlbumSearch.module.css";
+// This component displays a search bar and a grid of album cards.
+// This is only accessible to me so I can search for albums to review.
 
 const AlbumSearch = ({
   searchFunction,
@@ -47,7 +49,7 @@ const AlbumSearch = ({
           source="SEARCH"
         />
       )}
-      {searchResults.length === 0 && <p>No results found</p>}
+      {/* {searchResults.length === 0 && <p>No results found</p>} */}
       {error && <p>{error}</p>}
     </>
   );

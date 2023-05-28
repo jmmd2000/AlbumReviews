@@ -1,10 +1,9 @@
 * {
   font-family: "Courier Prime", monospace;
-  /* font-family: "Quicksand", sans-serif; */
 }
 
 .artistCard {
-  width: 250px;
+  width: 200px;
   aspect-ratio: 2/1;
   max-height: 250px;
   /* border: 1px solid white; */
@@ -12,42 +11,30 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  /* padding: 10px; */
-  /* overflow-wrap: break-word; */
-  /* box-shadow: 4px 5px 0px 0px white; */
-  transition: ease-in-out 0.2s;
   color: white;
   margin-bottom: 10px;
   position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .artistCard:hover {
-  /* transform: scale(1.05); */
   cursor: pointer;
-  transition: ease-in-out 0.2s;
-  margin: -1px;
-  /* box-shadow: 0px 0px 0px 0px white; */
-  border: 1px solid transparent;
-  /* box-shadow: 6px 7px 5px 1px white; */
-  /* box-shadow: 1px 2px 0px 0px white; */
-  /* box-shadow: 6px 7px 0px 0px white; */
-  /* box-shadow: 2px 2px 5px 1px white; */
+  box-shadow: 0 0 0 1px white;
+  transform: translateY(-10px);
+  transition: ease-in 0.2s;
 }
 
 .artistCard img {
   width: 150px;
-  height: auto;
+  height: 150px;
   margin: 20px;
   border: 1px solid white;
   border-radius: 50%;
 }
 
 .artistName {
-  /* border: 1px solid red; */
   width: 90%;
   font-size: 1.4rem;
-  /* margin: 0 3px; */
-  /* height: 15px; */
   margin: 5px;
   text-align: center;
   white-space: nowrap;

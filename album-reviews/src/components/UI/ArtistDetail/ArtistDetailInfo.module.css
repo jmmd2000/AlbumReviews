@@ -1,6 +1,6 @@
 .artistDetailHeader {
   display: grid;
-  grid-template-columns: 1fr 2.5fr;
+  grid-template-columns: 1fr 2.5fr 0.5fr;
   align-items: top;
   justify-content: center;
   padding: 3.2rem;
@@ -15,11 +15,9 @@
   color: #eee;
   margin: 0;
   margin-bottom: 45px;
-  /* padding: 3.2rem 0 0 0; */
 }
 
 .artistImage {
-  /* max-width: 25rem !important; */
   border-radius: 50%;
   width: 225px;
   aspect-ratio: 1 / 1;
@@ -32,29 +30,10 @@
   justify-content: left;
 }
 
-/* .artistName {
-  font-size: 1.6rem;
-  padding: 1.2rem;
-  display: inline-block;
-} */
-
 a {
   text-decoration: none;
   color: white;
 }
-
-/* .artistImage {
-  width: 5rem;
-  aspect-ratio: 1 / 1;
-  border-radius: 100%;
-  margin: 2rem 1rem;
-  display: inline-block;
-} */
-
-/* .artistInfo {
-  display: flex;
-  flex-direction: row;
-} */
 
 .infoDiv {
   margin: 10px;
@@ -67,8 +46,7 @@ a {
 
 .albumDescription {
   display: grid;
-  grid-template-columns: 0.5fr 0.75fr;
-  /* padding: 1.2rem; */
+  grid-template-columns: 1fr 1fr 1fr;
   color: white;
   margin-bottom: 45px;
 }
@@ -78,6 +56,7 @@ a {
   padding: 0.9rem 1.8rem;
   margin: 0;
   display: relative !important;
+  text-align: center;
 }
 
 .albumStatTitle {
@@ -85,9 +64,132 @@ a {
   background-color: rgb(255, 255, 255, 0.05);
   box-shadow: 0px 0px 7px 7px rgb(255, 255, 255, 0.05);
   width: fit-content;
+  margin: 1rem auto;
 }
 
 .flexRow {
   display: grid;
   grid-template-columns: 1fr 1.5fr;
+}
+
+.gold,
+.silver,
+.bronze {
+  padding: 0.5rem 1rem;
+  color: white;
+  font-weight: bold;
+}
+
+.gold {
+  background-color: goldenrod;
+}
+
+.silver {
+  background-color: silver;
+  color: #242424;
+}
+
+.bronze {
+  background-color: #cd7f32;
+}
+
+.scorePosition {
+  position: absolute;
+  top: 70px;
+  right: 70px;
+}
+
+@media (max-width: 1260px) {
+  .container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+  }
+  .artistDetailHeader {
+    width: 90%;
+    padding: 2.2rem;
+    margin: 0 auto 2.4rem auto;
+  }
+}
+
+@media (max-width: 1180px) {
+  .albumStat {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-width: 1070px) {
+  .albumStat {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 1000px) {
+  .artistName {
+    margin-left: 1rem;
+  }
+}
+
+@media (max-width: 1000px) {
+  .artistDetailHeader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .infoDiv {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  .flexRow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .albumDescription {
+    width: 80%;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media (max-width: 725px) {
+  .albumDescription {
+    width: 100%;
+  }
+
+  .scorePosition {
+    position: static;
+    margin: 1rem 0;
+  }
+}
+
+@media (max-width: 585px) {
+  .albumDescription {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .albumStatTitle:nth-child(1) {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .albumStatTitle:nth-child(2) {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .albumStatTitle:nth-child(3) {
+    grid-column: 1;
+    grid-row: 3;
+  }
+}
+
+@media (max-width: 390px) {
+  .albumStat {
+    font-size: 1.2rem;
+    padding: 0.9rem 0;
+  }
 }

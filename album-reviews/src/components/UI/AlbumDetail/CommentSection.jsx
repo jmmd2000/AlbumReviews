@@ -1,5 +1,6 @@
 import classes from "./CommentSection.module.css";
 
+// This component displays the comments for an album.
 const CommentSection = (comment) => {
   var modifiedComment = JSON.stringify(comment.comments);
   modifiedComment = modifiedComment.substring(1, modifiedComment.length - 1);

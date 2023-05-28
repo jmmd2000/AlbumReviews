@@ -4,6 +4,12 @@
   border: 1px solid white;
   box-shadow: 4px 5px 0 0 white;
   margin-bottom: 2.4rem;
+  padding: 3.2rem;
+}
+
+.container {
+  max-width: 120rem;
+  margin: 0 auto;
 }
 
 .trackListHeading {
@@ -16,9 +22,35 @@
 
 .trackList {
   color: white;
-  /* width: 90%; */
-  margin: auto;
-  /* -webkit-column-count: 2;
-  -moz-column-count: 2;
-  column-count: 2; */
+  padding: 1rem;
+  margin: 0 auto;
+}
+
+@media (max-width: 1260px) {
+  .container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  .trackListContainer {
+    width: 90%;
+    padding: 2.2rem;
+    margin: 0 auto 2.4rem auto;
+  }
+}
+
+@media (max-width: 1000px) {
+  .trackList {
+    padding: 0;
+  }
+}
+
+@media (max-width: 790px) {
+  .trackListContainer {
+    padding: 0;
+    border: none;
+    box-shadow: none;
+    width: 100%;
+  }
 }

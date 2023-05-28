@@ -84,6 +84,11 @@ html {
   scroll-behavior: smooth;
 }
 
-.whiteText {
+/* .whiteText {
   color: white;
+} */
+
+*::selection {
+  background-color: white;
+  color: #242424;
 }

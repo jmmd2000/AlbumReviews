@@ -1,0 +1,53 @@
+.errorContainer {
+  width: 50%;
+  height: 100vh;
+  margin: 0 auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.errorCard {
+  border: 1px solid red;
+  box-shadow: 4px 5px 0px 0px red;
+  padding: 5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.errorTitle {
+  color: white;
+}
+
+.errorMessage {
+  color: white;
+  font-size: 1.6rem;
+}
+
+.errorButton {
+  padding: 0.5rem 1rem;
+  background-color: transparent;
+  border: 1px solid white;
+  color: white;
+  font-size: 1.2rem;
+  box-shadow: 2px 3px 0px 0px white;
+  margin: 1rem;
+  transition: ease-in 0.2s;
+}
+
+.errorButton:hover {
+  cursor: pointer;
+  transform: translateY(3px);
+  box-shadow: 0px 0px 0px 0px white;
+  transition: ease-in 0.2s;
+}
+
+.errorTimer {
+  color: white;
+  font-size: 1.2rem;
+  margin: 0.5rem;
+}

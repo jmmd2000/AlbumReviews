@@ -1,6 +1,9 @@
-import { useEffect, useState } from "react";
 import classes from "./TrackListItem.module.css";
+
+import { useEffect, useState } from "react";
 import { formatMilliseconds } from "../AlbumDetail/AlbumDetailInfo";
+
+// This component displays a single track in the tracklist along with my rating for that track.
 
 const TrackListItem = ({ track, index, rating }) => {
   const [ratingClass, setRatingClass] = useState("");

@@ -1,7 +1,9 @@
 import classes from "./AlbumCard.module.css";
-import { Link } from "react-router-dom";
 
 import ReviewScore from "./AlbumDetail/ReviewScore";
+
+// This component nicely displays an album's cover, name, artist, release date and my rating.
+// It takes a cardClickFunction prop that allows it to be used to navigate to the album's detail page.
 
 const AlbumCard = (props) => {
   const {
@@ -9,7 +11,6 @@ const AlbumCard = (props) => {
     artistName,
     albumArt,
     releaseDate,
-    spotifyLink,
     albumID,
     cardClickFunction,
     finalRating,
@@ -18,8 +19,6 @@ const AlbumCard = (props) => {
   const clickHandler = () => {
     cardClickFunction(albumID);
   };
-
-  console.log(releaseDate);
 
   return (
     <div

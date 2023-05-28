@@ -4,9 +4,7 @@ import {
   collection,
   addDoc,
   doc,
-  getDoc,
   getDocs,
-  setDoc,
   updateDoc,
   deleteDoc,
   query,
@@ -14,10 +12,13 @@ import {
 } from "firebase/firestore";
 import firebaseConfig from "./firebaseConfig";
 
+// I will DEFINITELY need to refactor this and add error managing later. I'm just trying to get it to work for now.
+// And also the main ways it can go wrong are on my end, where I am modifying the data, so I am not too pushed about it.
+
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// id, condition
+// Add an album
 
 export const addAlbum = async (data) => {
   const albumsRef = collection(db, "albums");
@@ -28,85 +29,133 @@ export const addAlbum = async (data) => {
 
   console.log(data);
 
-  try {
-    addDoc(albumsRef, {
-      album: data.album,
-      artistID: data.album.artists[0].id,
-      // total_tracks: data.album.album.total_tracks,
-      // id: data.album.id,
-      // name: data.album.album.name,
-      // artist: data.album.album.artists,
-      // images: data.album.album.images,
-      // release_date: data.album.album.release_date,
-      comment: data.comment,
-      ratings: data.ratings,
-      finalRating: data.finalRating,
-      durationMS: data.durationMS,
-    });
-    responseCode = 200;
-    responseMessage = "Success";
-    responseData = data;
-  } catch (error) {
-    responseCode = error.code;
-    responseMessage = error.message;
-    responseData = error.data;
-  }
+  // try {
+  // addDoc(albumsRef, {
+  //   album: data.album,
+  //   artistID: data.album.artists[0].id,
+  //   comment: data.comment,
+  //   ratings: data.ratings,
+  //   finalRating: data.finalRating,
+  //   durationMS: data.durationMS,
+  //   postDate: Date.now(),
+  // });
+  //   responseCode = 200;
+  //   responseMessage = "Success";
+  //   responseData = data;
+  // } catch (error) {
+  //   responseCode = error.code;
+  //   responseMessage = error.message;
+  //   responseData = error.data;
+  // }
+  await addDoc(albumsRef, {
+    album: data.album,
+    artistID: data.album.artists[0].id,
+    comment: data.comment,
+    ratings: data.ratings,
+    finalRating: data.finalRating,
+    durationMS: data.durationMS,
+    postDate: Date.now(),
+  });
 
-  return { responseCode, responseMessage, responseData };
+  await updateArtistScores();
+
+  // await updateArtistRanking(data.album.artists[0].id, "add");
+  // const albums = await getAllAlbums();
+  // console.log(albums);
+  // if (albums.length === 1) {
+  //   console.log("create cos length is 1");
+  //   await manageArtistLeaderboard("create");
+  // } else {
+  //   await manageArtistLeaderboard("update");
+  // }
+
+  // return { responseCode, responseMessage, responseData };
 };
 
+// Delete album where album.id = id
+// Also update the artist leaderboard
+
 export const deleteAlbum = async (id, artistID) => {
-  console.log("deleteAlbum");
   const albums = await getAllAlbumsByArtist(artistID);
-  console.log(albums);
-  console.log(JSON.stringify(albums.length));
+
   if (albums.length === 1) {
     deleteArtist(artistID);
   }
-  console.log("else");
+
+  const querySnapshot = await getDocs(
+    query(collection(db, "albums"), where("album.id", "==", id))
+  );
+
+  const docRef = doc(db, "albums", querySnapshot.docs[0].id);
+
+  await deleteDoc(docRef);
+  await updateArtistScores();
+};
+
+// Update the album where album.id = id
+// Also update the artist leaderboard
+
+export const updateAlbum = async (id, data) => {
+  console.log("updateAlbum");
   const querySnapshot = await getDocs(
     query(collection(db, "albums"), where("album.id", "==", id))
   );
   console.log(querySnapshot.docs);
 
   const docRef = doc(db, "albums", querySnapshot.docs[0].id);
-  // console.log(querySnapshot.docs[0].id);
-  // Why is this not deleteing the document?
-  await deleteDoc(docRef);
+  await updateDoc(docRef, {
+    album: data.album,
+    artistID: data.album.artists[0].id,
+    comment: data.comment,
+    ratings: data.ratings,
+    finalRating: data.finalRating,
+    durationMS: data.durationMS,
+    postDate: data.postDate,
+    // updateDate: Date.now(),
+  });
+
+  // await updateArtistRanking(data.album.artists[0].id, "update");
+  await updateArtistScores();
 };
+
+// Get all albums from the collection, used for grids
 
 export const getAllAlbums = async () => {
   console.log("getAllAlbums");
   var albums = [];
   const querySnapshot = await getDocs(collection(db, "albums"));
   querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    // console.log(doc.id, " => ", doc.data());
     albums.push(doc.data());
   });
 
   return albums;
 };
 
+// Get the details for a specific album
+
 export const getAlbumDetail = async (id) => {
-  console.log("getAlbumDetail");
+  try {
+    const querySnapshot = await getDocs(
+      query(collection(db, "albums"), where("album.id", "==", id))
+    );
 
-  const querySnapshot = await getDocs(
-    query(collection(db, "albums"), where("album.id", "==", id))
-  );
+    var docs = [];
+    querySnapshot.forEach((doc) => {
+      docs.push(doc.data());
+    });
 
-  var docs = [];
-  querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    console.log(doc.id, " => ", doc.data());
-    docs.push(doc.data());
-  });
-  if (querySnapshot.empty) {
-    return null;
-  } else {
-    return docs[0];
+    if (querySnapshot.empty) {
+      throw new Error("Album not found");
+    } else {
+      return docs[0];
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
   }
 };
+
+// Get all albums from a specific artist
 
 export const getAllAlbumsByArtist = async (id) => {
   console.log("getAllAlbumsByArtist");
@@ -115,13 +164,13 @@ export const getAllAlbumsByArtist = async (id) => {
     query(collection(db, "albums"), where("artistID", "==", id))
   );
   querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    // console.log(doc.id, " => ", doc.data());
     albums.push(doc.data());
   });
 
   return albums;
 };
+
+// Add an artist to the collection
 
 export const addArtist = async (data) => {
   const artistsRef = collection(db, "artists");
@@ -132,21 +181,24 @@ export const addArtist = async (data) => {
 
   console.log(data);
 
-  try {
-    addDoc(artistsRef, {
-      artist: data.artist,
-    });
-    responseCode = 200;
-    responseMessage = "Success";
-    responseData = data;
-  } catch (error) {
-    responseCode = error.code;
-    responseMessage = error.message;
-    responseData = error.data;
-  }
+  // try {
+  await addDoc(artistsRef, {
+    artist: data.artist,
+  });
 
-  return { responseCode, responseMessage, responseData };
+  //   responseCode = 200;
+  //   responseMessage = "Success";
+  //   responseData = data;
+  // } catch (error) {
+  //   responseCode = error.code;
+  //   responseMessage = error.message;
+  //   responseData = error.data;
+  // }
+
+  // return { responseCode, responseMessage, responseData };
 };
+
+// Delete an artist
 
 export const deleteArtist = async (id) => {
   console.log("deleteArtist");
@@ -156,12 +208,16 @@ export const deleteArtist = async (id) => {
   );
 
   const docRef = doc(db, "artists", querySnapshot.docs[0].id);
-
+  const artists = await getAllArtists();
+  // if (artists.length === 1) {
+  //   await manageArtistLeaderboard("delete");
+  // }
   await deleteDoc(docRef);
 };
 
+// Get the details for a specific artist
+
 export const getArtistDetail = async (id) => {
-  console.log("getArtistDetail");
   // const albumRef = doc(db, "albums", "2MaVmwpatnKBVkWLNrr3");
   // const albumSnapshot = await getDoc(albumRef);
   // console.log(albumSnapshot);
@@ -175,8 +231,6 @@ export const getArtistDetail = async (id) => {
   // console.log(querySnapshot);
   var docs = [];
   querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    console.log(doc.id, " => ", doc.data());
     docs.push(doc.data());
   });
   // console.log(albumSnapshot.data());
@@ -184,135 +238,115 @@ export const getArtistDetail = async (id) => {
   return docs[0];
 };
 
+// Get all artists from the collection, used for grids
 export const getAllArtists = async () => {
-  console.log("getAllArtists");
   var artists = [];
   const querySnapshot = await getDocs(collection(db, "artists"));
   querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    // console.log(doc.id, " => ", doc.data());
     artists.push(doc.data());
   });
 
   return artists;
 };
 
-// This code randomly stopped working overnight without any changes to it.
-// Changed to above code and it works again.
-// export const getAccessToken = async () => {
-//   let accessToken = null;
-//   const authUrl = "https://accounts.spotify.com/api/token";
-//   const { clientID, clientSecret } = getApiKeys();
-//   const authString = `${clientID}:${clientSecret}`;
-//   const encodedAuthString = btoa(authString);
-//   // const tokenEndpoint = "https://accounts.spotify.com/api/token";
-//   const requestBody = "grant_type=client_credentials";
-//   const authParamaters = {
-//     method: "POST",
-//     headers: {
-//       Authorization: `Basic ${encodedAuthString}`,
-//       "Content-Type": "application/x-www-form-urlencoded",
-//     },
-//     body: requestBody,
-//   };
-//   // This function is called before any request is made to the Spotify API.
-//   // It checks if the access token is expired, and if so, it requests a new one.
-//   // If the access token is not expired, it does nothing.
+// Go thru each artist, get all their albums, calculate the average rating, and update the artist score
 
-//   // var authParamaters = {
-//   //   method: "POST",
-//   //   headers: {
-//   //     "Content-Type": "application/x-www-form-urlencoded",
-//   //   },
-//   //   body:
-//   //     "grant_type=client_credentials&client_id=" +
-//   //     clientID +
-//   //     "&client_secret=" +
-//   //     clientSecret,
-//   // };
+export const updateArtistScores = async () => {
+  const artists = await getAllArtists();
+  console.log(artists);
+  for (const artist of artists) {
+    const albums = await getAllAlbumsByArtist(artist.artist.id);
 
-//   // var authParamaters = {
-//   //   headers: {
-//   //     Authorization: "Basic " + clientID + ":" + clientSecret,
-//   //   },
-//   //   form: {
-//   //     grant_type: "client_credentials",
-//   //   },
-//   //   // json: true,
-//   // };
+    let totalScore = 0;
+    for (const album of albums) {
+      // parse the finalRating to a number
+      let rating = parseInt(album.finalRating);
 
-//   const tokenFromDB = doc(db, "accessTokens", "token");
-//   const tokenSnapshot = await getDoc(tokenFromDB);
+      totalScore += rating;
+    }
+    let averageScore = totalScore / albums.length;
 
-//   if (tokenSnapshot.exists()) {
-//     // If the token exists, check if it's expired.
-//     // If it's expired, request a new one and save it to the database.
-//     const data = tokenSnapshot.data();
+    averageScore = Math.round(averageScore);
+    // update the artist score
+    const querySnapshot = await getDocs(
+      query(
+        collection(db, "artists"),
+        where("artist.id", "==", artist.artist.id)
+      )
+    );
 
-//     if (data.expiresAt < Date.now()) {
-//       console.log("token expired");
-
-//       const response = await fetch(authUrl, authParamaters);
-//       const data = await response.json();
-
-//       if (response.status !== 200) {
-//         console.log("Error getting access token");
-//         accessToken = null;
-//       } else {
-//         await updateDoc(tokenFromDB, {
-//           token: data.access_token,
-//           expiresAt: Date.now() + data.expires_in * 1000,
-//         });
-
-//         accessToken = data.access_token;
-//       }
-//     } else {
-//       // If it's not expired, do nothing.
-//       console.log("token not expired");
-//       accessToken = data.token;
-//     }
-//   } else {
-//     // If the token doesn't exist, request a new one and save it to the database.
-//     console.log("No such document!");
-
-//     const response = await fetch(authUrl, authParamaters);
-//     const data = await response.json();
-
-//     if (response.status !== 200) {
-//       console.log("Error getting access token");
-//       return;
-//     } else {
-//       await setDoc(tokenFromDB, {
-//         token: data.access_token,
-//         expiresAt: Date.now() + data.expires_in * 1000,
-//       });
-
-//       accessToken = data.access_token;
-//     }
-//   }
-//   console.log(accessToken);
-//   return accessToken;
-// };
-
-const getApiKeys = async () => {
-  console.log("getApiKeys");
-
-  const docRef = doc(db, "apiKeys", "keys");
-  const docSnap = await getDoc(docRef);
-  let returnObject;
-
-  if (docSnap.exists()) {
-    const data = docSnap.data();
-    returnObject = {
-      clientID: data.client,
-      clientSecret: data.secret,
-    };
-    console.log("Document data:", data);
-  } else {
-    console.log("No such document!");
+    const docRef = doc(db, "artists", querySnapshot.docs[0].id);
+    await updateDoc(docRef, {
+      averageRating: averageScore,
+      updateTimestamp: Date.now(),
+    });
   }
 
-  console.log(returnObject);
+  // update the leaderboard
+  await updateLeaderboard();
+};
 
-  return returnObject;
+// Take each artist rating and sort them
+
+export const generateLeaderboard = async () => {
+  const artists = await getAllArtists();
+
+  let leaderboard = [];
+  artists.forEach((artist) => {
+    leaderboard.push({
+      artist: artist.artist.name,
+      averageRating: artist.averageRating,
+    });
+  });
+
+  // Sort the leaderboard by average rating
+  leaderboard.sort((a, b) => {
+    return b.averageRating - a.averageRating;
+  });
+
+  return leaderboard;
+};
+
+// Update the overall artist leaderboard in the collection
+
+export const updateLeaderboard = async () => {
+  // update the artist score
+  const querySnapshot = await getDocs(query(collection(db, "leaderboard")));
+
+  if (querySnapshot.docs.length === 0) {
+    await addDoc(collection(db, "leaderboard"), {
+      leaderboard: await generateLeaderboard(),
+      updateTimestamp: Date.now(),
+    });
+  } else {
+    const docRef = doc(db, "leaderboard", querySnapshot.docs[0].id);
+    await updateDoc(docRef, {
+      leaderboard: await generateLeaderboard(),
+      updateTimestamp: Date.now(),
+    });
+  }
+};
+
+// Get the leaderboard, used for displaying the artist ranking on the artist detail page
+
+export const getLeaderboard = async () => {
+  const querySnapshot = await getDocs(query(collection(db, "leaderboard")));
+  const leaderboard = querySnapshot.docs[0].data().leaderboard;
+
+  return leaderboard;
+};
+
+// Get the position in the leaderboard for a specific artist
+
+export const getArtistLeaderboardPosition = async (artistName) => {
+  const leaderboard = await getLeaderboard();
+
+  let position = 0;
+  for (const artist of leaderboard) {
+    position++;
+    if (artist.artist === artistName) {
+      return position;
+    }
+  }
+  return position;
 };

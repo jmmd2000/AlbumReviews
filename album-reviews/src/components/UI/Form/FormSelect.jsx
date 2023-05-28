@@ -1,9 +1,12 @@
-import { useState } from "react";
-
 import classes from "./FormSelect.module.css";
 
-const FormSelect = ({ track }) => {
-  const [score, setScore] = useState(null);
+import { useState } from "react";
+
+// This component displays a single track along with a dropdown menu for selecting a rating for that track.
+
+const FormSelect = ({ track, presetScore }) => {
+  // If there is already a score (i.e. I am editing a review), set the score to the preset score.
+  const [score, setScore] = useState(presetScore);
   var parsedName = track.name.replace(/\s+/g, "");
   parsedName = parsedName.toLowerCase();
 
@@ -32,8 +35,8 @@ const FormSelect = ({ track }) => {
 
   var artistNames = "";
 
+  // This loop is used to display the artist names in the track in a nice format.
   for (var i = 0; i < track.artists.length; i++) {
-    // console.log(track.artists[i].name);
     if (i === track.artists.length - 1) {
       artistNames += track.artists[i].name;
       break;
@@ -41,12 +44,6 @@ const FormSelect = ({ track }) => {
       artistNames += track.artists[i].name + ", ";
     }
   }
-
-  // const changeHandler = (e) => {
-  //   setScore(e.target.value);
-  //   console.log(e.target.value);
-  //   // getSelectColor(score);
-  // };
 
   return (
     <div className={classes.formContainer}>
@@ -67,6 +64,7 @@ const FormSelect = ({ track }) => {
         onChange={(e) => setScore(e.target.value)}
         required
         id={track.track_number}
+        defaultValue={presetScore ? presetScore : "null"}
       >
         <option
           value="null"

@@ -2,7 +2,6 @@ import { getAllArtists } from "../firebase/firestore";
 import ArtistGrid from "../components/UI/ArtistGrid";
 import { useLoaderData, Await, useNavigate, defer } from "react-router";
 import React, { Suspense } from "react";
-import LoadingSpinner from "../components/UI/LoadingSpinner";
 import SkeletonGrid from "../components/UI/Skeletons/SkeletonGrid";
 
 const ArtistsPage = () => {
@@ -16,12 +15,20 @@ const ArtistsPage = () => {
   }
   return (
     <>
-      <h1>Artists</h1>
-      <Suspense fallback={<SkeletonGrid />}>
+      <Suspense
+        fallback={
+          <SkeletonGrid
+            width={152}
+            height={152}
+            num={12}
+            shape={"circular"}
+            filters={true}
+          />
+        }
+      >
         <Await
           resolve={artistList}
           error={<div>There was an error loading the albums.</div>}
-          // children={}
         >
           {(loadedArtistList) => (
             <>

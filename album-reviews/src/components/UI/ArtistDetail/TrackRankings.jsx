@@ -1,21 +1,19 @@
-import TrackRankingSection from "./TrackRankingSection";
 import classes from "./TrackRankings.module.css";
+
+import TrackRankingSection from "./TrackRankingSection";
 import React, { useState } from "react";
 
 // The idea for this component is to have each "Score" have its own tab
 // Perfect, Amazing, Great, Good, Meh, Bad, Awful, Non-song
 // Each tab will have a list of songs that have that score
-// The tabs will be dynamic, if there are no "meh" songs, then the "meh" tab will not be there
+// The tabs will be dynamic, if there are no "meh" songs, then the "meh" tab will not be there.
 
 const TrackRankings = ({ albumData }) => {
-  // console.log(albumData);
-  // const aD = JSON.parse(albumData);
   const ratings = [];
   const tracks = [];
   for (let i = 0; i < albumData.length; i++) {
-    // albumData.forEach((album) => {
     const list = albumData[i].album.tracks.items;
-    // console.log(list);
+
     for (let j = 0; j < list.length; j++) {
       tracks.push({
         album: albumData[i].album.name,
@@ -28,13 +26,11 @@ const TrackRankings = ({ albumData }) => {
       });
     }
   }
-  // console.log(tracks);
   const [activeTab, setActiveTab] = useState("");
   const [notActiveClass, setnotActiveClass] = useState();
 
   // Get unique albums from the tracks
   const albums = [...new Set(tracks.map((track) => track.album))];
-  // console.log(albums);
 
   // Filter tracks based on active tab
   const filteredTracks = tracks.filter((track) => track.rating === activeTab);
@@ -51,6 +47,7 @@ const TrackRankings = ({ albumData }) => {
       };
     });
 
+  // This calculates the active tab and changes the class
   const clickHandler = (rating) => {
     console.log(rating);
     setActiveTab(rating);

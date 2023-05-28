@@ -1,0 +1,163 @@
+.homeContent {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: start;
+  width: 120rem;
+  margin: 0 auto;
+  padding: 2rem;
+  border: 1px solid white;
+  box-shadow: 4px 5px 0 0 white;
+}
+
+.contentHeading {
+  font-size: 3rem;
+  font-weight: bold;
+  color: white;
+  margin: 1rem;
+  transition: background 0.5s ease-in-out;
+}
+
+.contentHeading:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(155, 89, 182, 1) 12%,
+    rgba(92, 124, 250, 1) 24%,
+    rgba(51, 154, 240, 1) 36%,
+    rgba(81, 207, 102, 1) 48%,
+    rgba(241, 196, 15, 1) 68%,
+    rgba(231, 76, 60, 1) 80%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: background 0.5s ease-in-out;
+  cursor: cell;
+  text-shadow: 1px 1px 20px white;
+}
+
+.contentBody {
+  font-size: 1.5rem;
+  color: white;
+  margin: 1rem;
+  line-height: 1.5;
+}
+
+.contentList {
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.socials {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem;
+}
+
+.rating {
+  padding: 1rem;
+  color: white;
+  font-size: 1.4rem;
+  text-align: center;
+}
+
+.perfect {
+  background-color: #9b59b6;
+}
+
+.amazing {
+  background-color: #5c7cfa;
+}
+
+.great {
+  background-color: #339af0;
+}
+
+.good {
+  background-color: #51cf66;
+}
+
+.meh {
+  background-color: #f1c40f;
+}
+
+.bad {
+  background-color: #e67e22;
+}
+
+.awful {
+  background-color: #e74c3c;
+}
+
+.nonSong {
+  background-color: #34495e;
+}
+
+@media (max-width: 1260px) {
+  .homeContent {
+    width: 90%;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 880px) {
+  .contentBody {
+    width: 100%;
+  }
+
+  .contentList {
+    width: 90%;
+    margin: 0 auto;
+    gap: 0;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+}
+
+@media screen and (max-width: 613px) {
+  .contentHeading {
+    width: 100%;
+    font-size: 2.5rem;
+  }
+
+  .rating {
+    font-size: 1.4rem;
+  }
+}
+
+@media screen and (max-width: 580px) {
+  .homeContent {
+    border: none;
+    box-shadow: none;
+  }
+  .contentList {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    padding: 1rem;
+    gap: 1rem;
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 440px) {
+  .rating {
+    font-size: 1.1rem;
+  }
+}
+
+@media screen and (max-width: 375px) {
+  .rating {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 280px) {
+  .contentList {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

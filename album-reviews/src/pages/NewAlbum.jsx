@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
-import { addAlbum } from "../firebase/firestore";
-import AlbumCard from "../components/UI/AlbumCard";
-import AlbumGrid from "../components/UI/AlbumGrid";
 import AlbumSearch from "../components/UI/AlbumSearch";
 import AlbumForm from "../components/UI/AlbumForm";
 import LoadingSpinner from "../components/UI/LoadingSpinner";
 
 import { clientID, clientSecret } from "../keys";
+
+// This page is used to add a new album review.
+// Code for accessing the Spotify API is here.
+// Move this code to a separate file later.
 
 const NewAlbumPage = () => {
   const [searchInput, setSearchInput] = useState("");
@@ -36,8 +37,7 @@ const NewAlbumPage = () => {
     }
   }, [accessToken]);
 
-  // TODO
-  // 1. Manage error states and loading states
+  // TODO: Manage error states and loading states
 
   async function search() {
     setLoading(true);
@@ -52,8 +52,6 @@ const NewAlbumPage = () => {
     //   setError("Access token is null");
     //   return;
     // }
-    console.log(searchInput);
-    console.log(accessToken);
 
     var searchParamaters = {
       method: "GET",
@@ -71,17 +69,14 @@ const NewAlbumPage = () => {
     );
     request = await request.json();
 
-    // console.log(request);
-
     if (request.error) {
-      console.log(request.error);
+      // console.log(request.error);
       // return;
     }
 
     var data = request.albums.items;
 
     var modifiedArray = [...data];
-    // console.log(modifiedArray);
 
     modifiedArray.forEach((element) => {
       //remove the element if its a single
@@ -95,8 +90,7 @@ const NewAlbumPage = () => {
     });
 
     setSearchResults(modifiedArray);
-    console.log(modifiedArray);
-    // console.log(modifiedArray[0].id);
+
     setLoading(false);
   }
 
@@ -105,7 +99,7 @@ const NewAlbumPage = () => {
     searchResults.forEach((result) => {
       results.push(result);
     });
-    // console.log(results);
+
     return results;
   }
 
@@ -130,8 +124,7 @@ const NewAlbumPage = () => {
 
     const response = await fetch(tokenEndpoint, requestOptions);
     const data = await response.json();
-    // console.log(data);
-    // console.log(data + " " + Date.now());
+
     accessToken = data.access_token;
     // setAccessToken(accessToken);
 
@@ -139,7 +132,6 @@ const NewAlbumPage = () => {
   }
 
   async function getAlbum(id, accessToken) {
-    // console.log(id);
     const response = await fetch(`https://api.spotify.com/v1/albums/${id}`, {
       method: "GET",
       headers: {
@@ -150,14 +142,12 @@ const NewAlbumPage = () => {
     setLoading(true);
     const data = await response.json();
 
-    // console.log(data);
     setLoading(false);
 
     return data;
   }
 
   async function getArtist(id, accessToken) {
-    console.log(id);
     const response = await fetch(`https://api.spotify.com/v1/artists/${id}`, {
       method: "GET",
       headers: {
@@ -168,7 +158,6 @@ const NewAlbumPage = () => {
     setLoading(true);
     const data = await response.json();
 
-    console.log(data);
     setLoading(false);
 
     return data;
@@ -179,17 +168,12 @@ const NewAlbumPage = () => {
     setAlbumID(id);
     const album = await getAlbum(id, accessToken);
     setAlbum(album);
-    console.log(album.artists[0].id);
+
     const artistData = await getArtist(album.artists[0].id, accessToken);
     setArtist(artistData);
 
-    console.log(artist);
-
     setAlbumChosen(true);
     setLoading(false);
-    console.log(album);
-    console.log(artistData);
-    console.log(artist);
   }
 
   return (
@@ -207,7 +191,7 @@ const NewAlbumPage = () => {
         />
       )}
       {loading && <LoadingSpinner />}
-      {console.log(artist)}
+
       {albumChosen && !loading && artist != null && (
         <AlbumForm
           album={album}

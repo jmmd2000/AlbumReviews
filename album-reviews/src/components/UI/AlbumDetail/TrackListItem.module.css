@@ -4,7 +4,6 @@
   margin: 1rem;
   padding: 1rem;
   font-size: 1.6rem;
-  /* border: 1px solid white; */
 }
 
 .trackName,
@@ -23,45 +22,73 @@
 .trackRating {
   text-align: center;
   padding: 0.5rem;
-  /* border: 1px solid white; */
 }
 
 .perfect {
   background-color: #9b59b6;
-  /* color: #9b59b6; */
 }
 
 .amazing {
   background-color: #5c7cfa;
-  /* color: #5c7cfa; */
 }
 
 .great {
   background-color: #339af0;
-  /* color: #339af0; */
 }
 
 .good {
   background-color: #51cf66;
-  /* color: #51cf66; */
 }
 
 .meh {
   background-color: #f1c40f !important;
-  /* color: #f1c40f !important; */
 }
 
 .bad {
   background-color: #e67e22;
-  /* color: #e67e22; */
 }
 
 .awful {
   background-color: #e74c3c;
-  /* color: #e74c3c; */
 }
 
 .nonSong {
   background-color: #34495e;
-  /* color: #34495e; */
+}
+
+@media (max-width: 1000px) {
+  .trackListItem {
+    padding: 0.5rem;
+    margin: 0.5rem;
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 790px) {
+  .trackListItem {
+    grid-template-columns: 0.1fr 1fr 1fr 0.25fr;
+  }
+  .trackDuration {
+    display: none;
+  }
+
+  .trackListItem {
+    font-size: 1.2rem;
+  }
+
+  .trackArtists,
+  .trackName {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+@media (max-width: 550px) {
+  .trackListItem {
+    grid-template-columns: 0.1fr 1fr 0.25fr;
+  }
+  .trackArtists {
+    display: none;
+  }
 }

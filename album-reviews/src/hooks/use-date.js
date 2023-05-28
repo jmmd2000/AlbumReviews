@@ -1,5 +1,4 @@
-// write a custom hook called useDate
-// it should return the current date in the format: month xth year
+// This hook takes a date and returns a formatted date string.
 
 const useDate = (date) => {
   const parsedDate = new Date(date);

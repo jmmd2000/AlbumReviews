@@ -1,9 +1,11 @@
-import TrackRankingItem from "./TrackRankingItem";
 import classes from "./TrackRankingSection.module.css";
 
+import TrackRankingItem from "./TrackRankingItem";
+
+// This component contains the content for each rating tab in the TrackRankings component.
+// It displays a div for each album and a TrackRankingItem for each track in that album that fits the rating tab's criteria.
+
 const TrackRankingSection = ({ filteredAlbums, filteredTracks }) => {
-  console.log(filteredAlbums);
-  console.log(filteredTracks);
   return (
     <div className={classes.trackList}>
       {filteredAlbums.map((album) => (

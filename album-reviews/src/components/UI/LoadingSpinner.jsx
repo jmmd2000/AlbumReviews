@@ -1,4 +1,6 @@
 import { ColorRing } from "react-loader-spinner";
+
+// This component displays a custom loading spinner with the colours of the review scores.
 const LoadingSpinner = () => {
   return (
     <ColorRing
@@ -11,7 +13,6 @@ const LoadingSpinner = () => {
         margin: "auto",
       }}
       wrapperClass="blocks-wrapper"
-      // className={classes.centerSpinner}
       colors={[
         "#9b59b6",
         "#5c7cfa",

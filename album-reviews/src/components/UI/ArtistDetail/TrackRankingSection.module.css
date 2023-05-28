@@ -1,4 +1,3 @@
-/* track-list.css */
 .tabList {
   display: flex;
   margin-bottom: 10px;
@@ -34,7 +33,6 @@
 .trackList ul {
   list-style-type: none;
   padding: 0;
-  /* border: 1px solid red; */
   color: white;
 }
 
@@ -45,7 +43,6 @@
 
 .listContainer {
   display: flex;
-  /* grid-template-columns: 1fr 5fr; */
 }
 
 .albumArt {

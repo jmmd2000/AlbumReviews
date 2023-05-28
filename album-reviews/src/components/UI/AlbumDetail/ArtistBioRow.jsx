@@ -1,5 +1,6 @@
 import classes from "./ArtistBioRow.module.css";
-import { useEffect, useState, useReducer } from "react";
+
+import { useEffect, useReducer } from "react";
 import { getArtistDetail } from "../../../firebase/firestore";
 import { Link } from "react-router-dom";
 import Skeleton from "@mui/material/Skeleton";
@@ -9,7 +10,6 @@ function reducer(state, action) {
     case "FETCH_INIT":
       return { ...state, isLoading: true, error: false };
     case "FETCH_SUCCESS":
-      // console.log(state.artistData.name);
       return {
         ...state,
         isLoading: false,
@@ -17,12 +17,16 @@ function reducer(state, action) {
         artistData: action.payload,
       };
     case "FETCH_FAILURE":
-      console.log(state.artistData);
       return { ...state, isLoading: false, error: true };
     default:
       throw new Error("Invalid action type");
   }
 }
+
+// This component displays the artist info on the album detail page.
+// This goes in the AlbumDetail component. The artist info contained in the album
+// object does not contain enough info for the artist so it must be fetched seoarately.
+// It uses a reducer to manage the different states.
 
 const ArtistBioRow = ({ artistID }) => {
   const [state, dispatch] = useReducer(reducer, {
@@ -68,7 +72,6 @@ const ArtistBioRow = ({ artistID }) => {
       {state.artistData !== null && (
         <>
           <img
-            // src={null}
             src={state.artistData.artist.images[0].url}
             alt="Photo of Post Malone"
             className={classes.artistImage}
@@ -83,12 +86,6 @@ const ArtistBioRow = ({ artistID }) => {
           </h2>
         </>
       )}
-
-      {/* {state.error && state.isLoading !== true ? (
-        <p className={classes.errorMessage}>Error retrieving artist details</p>
-      ) : (
-        <p>main</p>
-      )} */}
     </div>
   );
 };

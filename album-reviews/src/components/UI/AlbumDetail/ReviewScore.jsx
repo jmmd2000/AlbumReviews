@@ -1,8 +1,11 @@
-import { useEffect, useState } from "react";
-
 import classes from "./ReviewScore.module.css";
 
-const ReviewScore = ({ score, onCard }) => {
+import { useEffect, useState } from "react";
+
+// This component displays the score of an album and changes appearance based on the score.
+// The onCard prop is used to determine if the component is being used on the album card or the album detail page,
+// and changes the style accordingly.
+const ReviewScore = ({ score, onCard, style }) => {
   const [scoreClass, setScoreClass] = useState();
   const [scoreText, setScoreText] = useState();
 
@@ -19,7 +22,7 @@ const ReviewScore = ({ score, onCard }) => {
     } else if (score > 40 && score < 60) {
       setScoreClass(classes.meh);
       setScoreText("Meh");
-    } else if (score > 60 && score < 71) {
+    } else if (score > 59 && score < 71) {
       setScoreClass(classes.good);
       setScoreText("Good");
     } else if (score > 70 && score < 86) {
@@ -32,11 +35,9 @@ const ReviewScore = ({ score, onCard }) => {
       setScoreClass(classes.perfect);
       setScoreText("Perfect");
     }
-  }, [scoreClass]);
+  }, [score]);
 
-  // console.log(scoreClass);
-  const onCardClass =
-    onCard === true ? classes.onCardPosition : classes.inDescriptionPosition;
+  const onCardClass = onCard === true ? classes.onCardPosition : style;
   const sizeClass = onCard === true ? classes.small : classes.large;
   const textSizeClass = onCard === true ? classes.smallText : classes.largeText;
 
@@ -45,11 +46,11 @@ const ReviewScore = ({ score, onCard }) => {
       <div className={`${classes.circle} ${scoreClass} ${sizeClass}`}>
         <div className={classes.innerCircle}>{score}</div>
       </div>
-      {/* {onCard !== true && ( */}
-      <p className={`${classes.scoreText} ${scoreClass} ${textSizeClass}`}>
-        {scoreText}
-      </p>
-      {/* )} */}
+      {onCard !== true && (
+        <p className={`${classes.scoreText} ${scoreClass} ${textSizeClass}`}>
+          {scoreText}
+        </p>
+      )}
     </div>
   );
 };

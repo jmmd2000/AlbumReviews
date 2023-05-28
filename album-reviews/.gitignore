@@ -29,4 +29,6 @@ dist-ssr
 # Firebase
 /src/firebase/firebaseConfig.js
 
+
+# Todo
 TODO.txt

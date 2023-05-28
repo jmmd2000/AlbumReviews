@@ -1,20 +1,20 @@
-// import { useEffect, useState, useReducer } from "react";
-
 import classes from "./AlbumDetailInfo.module.css";
 
 import useDate from "../../../hooks/use-date";
-
 import ArtistBioRow from "./ArtistBioRow";
+import PostDates from "./PostDates";
 import ReviewScore from "./ReviewScore";
+
+// This component displays the album cover, album name, artist name, review score, and album stats
+// It uses the useDate hook to format the dates and the formatMilliseconds function to format the album runtime.
 
 const AlbumDetailInfo = ({ albumData }) => {
   const releaseDate = useDate(albumData.album.release_date);
 
   const album = albumData.album;
-  // console.log(albumData.durationMS);
 
   return (
-    <section className={classes.container}>
+    <div className={classes.container}>
       <div className={classes.albumDetailHeader}>
         <img
           src={album.images[0].url}
@@ -27,11 +27,7 @@ const AlbumDetailInfo = ({ albumData }) => {
           <div className={classes.flexRow}>
             <ArtistBioRow artistID={album.artists[0].id} />
           </div>
-          <ReviewScore
-            score={albumData.finalRating}
-            onCard={false}
-            // className={classes.scorePosition}
-          />
+
           <div className={classes.albumDescription}>
             <p className={classes.albumStatTitle}># of songs</p>
             <p className={classes.albumStatTitle}>Runtime</p>
@@ -42,11 +38,19 @@ const AlbumDetailInfo = ({ albumData }) => {
             </p>
             <p className={classes.albumStat}>{releaseDate}</p>
           </div>
-
-          {/* <a href={album.external_urls.spotify}>Spotify Link</a> */}
         </div>
+        <div></div>
+        <PostDates
+          postDate={albumData.postDate}
+          editDate={albumData.updateDate}
+        />
+        <ReviewScore
+          score={albumData.finalRating}
+          onCard={false}
+          style={classes.scorePosition}
+        />
       </div>
-    </section>
+    </div>
   );
 };
 

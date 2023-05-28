@@ -1,0 +1,17 @@
+.postDates {
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.postDate {
+  background-color: rgb(255, 255, 255, 0.05);
+  box-shadow: 0px 0px 7px 7px rgb(255, 255, 255, 0.05);
+  margin: 1rem;
+  color: white;
+  font-size: 1.1rem;
+}
