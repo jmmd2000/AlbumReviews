@@ -27,8 +27,6 @@ export const addAlbum = async (data) => {
   let responseMessage = null;
   let responseData = null;
 
-  console.log(data);
-
   // try {
   // addDoc(albumsRef, {
   //   album: data.album,
@@ -96,11 +94,9 @@ export const deleteAlbum = async (id, artistID) => {
 // Also update the artist leaderboard
 
 export const updateAlbum = async (id, data) => {
-  console.log("updateAlbum");
   const querySnapshot = await getDocs(
     query(collection(db, "albums"), where("album.id", "==", id))
   );
-  console.log(querySnapshot.docs);
 
   const docRef = doc(db, "albums", querySnapshot.docs[0].id);
   await updateDoc(docRef, {
@@ -121,7 +117,6 @@ export const updateAlbum = async (id, data) => {
 // Get all albums from the collection, used for grids
 
 export const getAllAlbums = async () => {
-  console.log("getAllAlbums");
   var albums = [];
   const querySnapshot = await getDocs(collection(db, "albums"));
   querySnapshot.forEach((doc) => {
@@ -150,7 +145,6 @@ export const getAlbumDetail = async (id) => {
       return docs[0];
     }
   } catch (error) {
-    console.log(error);
     throw error;
   }
 };
@@ -158,7 +152,6 @@ export const getAlbumDetail = async (id) => {
 // Get all albums from a specific artist
 
 export const getAllAlbumsByArtist = async (id) => {
-  console.log("getAllAlbumsByArtist");
   var albums = [];
   const querySnapshot = await getDocs(
     query(collection(db, "albums"), where("artistID", "==", id))
@@ -178,8 +171,6 @@ export const addArtist = async (data) => {
   let responseCode = null;
   let responseMessage = null;
   let responseData = null;
-
-  console.log(data);
 
   // try {
   await addDoc(artistsRef, {
@@ -201,8 +192,6 @@ export const addArtist = async (data) => {
 // Delete an artist
 
 export const deleteArtist = async (id) => {
-  console.log("deleteArtist");
-
   const querySnapshot = await getDocs(
     query(collection(db, "artists"), where("artist.id", "==", id))
   );
@@ -253,7 +242,7 @@ export const getAllArtists = async () => {
 
 export const updateArtistScores = async () => {
   const artists = await getAllArtists();
-  console.log(artists);
+
   for (const artist of artists) {
     const albums = await getAllAlbumsByArtist(artist.artist.id);
 

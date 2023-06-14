@@ -20,3 +20,10 @@
   padding: 1rem;
   margin: 1rem;
 }
+
+@media (max-width: 585px) {
+  .container {
+    border: none;
+    box-shadow: none;
+  }
+}

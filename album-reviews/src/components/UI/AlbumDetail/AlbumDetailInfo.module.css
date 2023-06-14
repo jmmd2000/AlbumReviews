@@ -157,6 +157,15 @@ a {
 }
 
 @media (max-width: 585px) {
+  .albumName {
+    margin-left: 0;
+    text-align: center;
+  }
+  .albumDetailHeader {
+    border: none;
+    box-shadow: none;
+  }
+
   .albumDescription {
     grid-template-columns: repeat(2, 1fr);
   }

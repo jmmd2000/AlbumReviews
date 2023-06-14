@@ -38,10 +38,9 @@ const ArtistBioRow = ({ artistID }) => {
   // Fetch the artist info and manage the different states
   useEffect(() => {
     async function getArtistInfo() {
-      console.log("getArtistInfo");
       dispatch({ type: "FETCH_INIT" });
       const artistDetail = await getArtistDetail(artistID);
-      console.log(artistDetail);
+
       if (artistDetail === undefined) {
         dispatch({ type: "FETCH_FAILURE" });
       } else {

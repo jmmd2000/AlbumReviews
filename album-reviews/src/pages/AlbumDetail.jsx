@@ -21,7 +21,6 @@ const AlbumDetailPage = () => {
   const error = useRouteError();
   document.title = pageTitle;
   const album = useRouteLoaderData("album-detail");
-  console.log(album);
 
   return (
     <>

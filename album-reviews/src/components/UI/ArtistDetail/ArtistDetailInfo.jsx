@@ -28,7 +28,6 @@ const ArtistDetailInfo = ({ artistData, albumData }) => {
     getboardPos();
   }, [artistData.artist.name]);
 
-  console.log(albumData);
   const numAlbums =
     albumData.length === 1
       ? albumData.length + " album"
@@ -44,7 +43,7 @@ const ArtistDetailInfo = ({ artistData, albumData }) => {
         />
         <div className={classes.infoDiv}>
           <h1 className={classes.artistName}>{artistData.artist.name}</h1>
-          {console.log(artistData)}
+
           <div className={classes.flexRow}></div>
           <div className={classes.albumDescription}>
             <p className={classes.albumStatTitle}># of albums reviewed</p>

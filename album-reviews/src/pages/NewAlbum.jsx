@@ -20,9 +20,9 @@ const NewAlbumPage = () => {
   const [album, setAlbum] = useState({});
   const [artist, setArtist] = useState(null);
 
-  useEffect(() => {
-    console.log(artist);
-  }, [artist]);
+  // useEffect(() => {
+
+  // }, [artist]);
 
   useEffect(() => {
     async function fixToken() {

@@ -33,10 +33,10 @@ const HomeContent = () => {
         removes it from the album average.You can view albums, or artists by
         clicking the links up top.
       </p>
-      <p className={classes.contentBody}>You can find my socials below!</p>
+      {/* <p className={classes.contentBody}>You can find my socials below!</p> */}
       <p className={classes.contentBody}>Thanks for visiting!</p>
       <p className={classes.contentBody}>James.</p>
-      <div className={classes.socials}>
+      {/* <div className={classes.socials}>
         <a href="https://github.com/jmmd2000">
           <GithubLogo
             size={36}
@@ -58,7 +58,7 @@ const HomeContent = () => {
             color="white"
           />
         </a>
-      </div>
+      </div> */}
     </div>
   );
 };

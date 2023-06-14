@@ -7,7 +7,7 @@ import SkeletonGrid from "../components/UI/Skeletons/SkeletonGrid";
 const ArtistsPage = () => {
   document.title = "Artists";
   const { artistList } = useLoaderData();
-  console.log(artistList);
+
   const navigate = useNavigate();
 
   function navigateToArtistDetail(artistID) {

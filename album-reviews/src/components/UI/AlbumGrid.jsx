@@ -9,8 +9,6 @@ import { useState } from "react";
 const AlbumGrid = ({ albums, cardClickFunction, source }) => {
   const [albumsList, setAlbumsList] = useState(albums);
 
-  console.log(albumsList);
-
   // This useEffect is used to update the layout of the grid
   // If there are less than 6 albums, it will use flexbox
   // If there are more than 6 albums, it will use grid
@@ -95,7 +93,9 @@ const AlbumGrid = ({ albums, cardClickFunction, source }) => {
           options={sortOptions}
         />
       )}
-
+      {albumsList.length === 0 && (
+        <h1 className={classes.noneMessage}>No albums found!</h1>
+      )}
       <div className={classes.grid}>
         {albumsList.map((album, i) => {
           let albumObject = {};
@@ -127,6 +127,7 @@ const AlbumGrid = ({ albums, cardClickFunction, source }) => {
               key={i}
               {...albumObject}
               cardClickFunction={cardClickFunction}
+              className={classes.animation}
             />
           );
         })}

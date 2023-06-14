@@ -81,6 +81,11 @@ const ArtistGrid = ({ artists, cardClickFunction }) => {
           options={sortOptions}
         />
       )}
+
+      {artistsList.length === 0 && (
+        <h1 className={classes.noneMessage}>No artists found!</h1>
+      )}
+
       <div className={classes.grid}>
         {artistsList.map((artist, i) => {
           let artistObject = {

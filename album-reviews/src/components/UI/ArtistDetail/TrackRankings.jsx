@@ -49,7 +49,6 @@ const TrackRankings = ({ albumData }) => {
 
   // This calculates the active tab and changes the class
   const clickHandler = (rating) => {
-    console.log(rating);
     setActiveTab(rating);
 
     switch (rating) {
@@ -82,7 +81,6 @@ const TrackRankings = ({ albumData }) => {
     }
   };
 
-  console.log(notActiveClass);
   return (
     <div className={classes.container}>
       <div className={`${classes.tabList} ${notActiveClass}`}>
