@@ -207,7 +207,7 @@ export async function action({ request, params }) {
     album: parsedAlbum,
     finalRating: data.get("finalRating"),
     durationMS: data.get("durationMS"),
-    postDate: Date.now(),
+    // postDate: Date.now(),
   };
 
   if (method === "PUT") {

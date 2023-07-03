@@ -106,7 +106,7 @@ export const updateAlbum = async (id, data) => {
     ratings: data.ratings,
     finalRating: data.finalRating,
     durationMS: data.durationMS,
-    postDate: data.postDate,
+    // postDate: data.postDate,
     // updateDate: Date.now(),
   });
 
@@ -267,7 +267,7 @@ export const updateArtistScores = async () => {
     const docRef = doc(db, "artists", querySnapshot.docs[0].id);
     await updateDoc(docRef, {
       averageRating: averageScore,
-      updateTimestamp: Date.now(),
+      // updateTimestamp: Date.now(),
     });
   }
 
